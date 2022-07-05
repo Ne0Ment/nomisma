@@ -95,12 +95,21 @@ function FetchBonds() {
     method: "GET",
     headers: { "Content-Type": "application/json" }
   }
-  fetch(serverUrl+'/GetAllBonds')
+  fetch(serverUrl + '/GetAllBonds')
     .then(t => t.text())
     .then(t => JSON.parse(t))
     .then(t => {
       if (t['status']) {
         bonds.value = t.bonds;
+        for (let i = 0; i < bonds.value.length; i++) {
+          bonds.value[i].maturity_date = new Date(Date.parse(bonds.value[i].maturity_date));
+          if (bonds.value[i].coupons) {
+            for (let j = 0; j < bonds.value[i].coupons.length; j++) {
+              bonds.value[i].coupons[j].coupon_date = new Date(Date.parse(bonds.value[i].coupons[j].coupon_date));
+            }
+          }
+        }
+        console.log(bonds.value);
         fetchedBonds.value = true;
       }
     })
