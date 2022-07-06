@@ -87,6 +87,7 @@ function FetchPortfolios() {
         portfolios.value = [];
         fetched.value = true;
       }
+      console.log(portfolios.value)
     });
 }
 
@@ -109,7 +110,6 @@ function FetchBonds() {
             }
           }
         }
-        console.log(bonds.value);
         fetchedBonds.value = true;
       }
     })
@@ -146,17 +146,16 @@ onMounted(() => {
 <template>
   <div class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto">
     <KeepAlive>
-
       <Head :tabs="tabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
     </KeepAlive>
     <KeepAlive>
       <Account v-if="chosenTab === 0" @ToggleLogin="ToggleLogin" />
     </KeepAlive>
-    <KeepAlive>
-      <Analysis v-if="((chosenTab === 1) && (fetched))" :portfolios="portfolios" />
+    <KeepAlive v-if="fetched">
+      <Analysis v-if="(chosenTab === 1)" :portfolios="portfolios" />
     </KeepAlive>
-    <KeepAlive>
-      <Search v-if="((chosenTab === 3) && (fetchedBonds))" />
+    <KeepAlive v-if="fetchedBonds">
+      <Search v-if="(chosenTab === 3)" :bonds="bonds"/>
     </KeepAlive>
   </div>
 </template>

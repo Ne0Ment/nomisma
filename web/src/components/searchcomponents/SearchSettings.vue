@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
 
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
@@ -12,15 +12,16 @@ function AddYears(date, yearCount) {
     return date;
 }
 
-const props = defineProps({
-    allBonds: Array
-});
-
 const emit = defineEmits(['UpdateSettings'])
 
-const settings = reactive({
+const settings = ref({
+    sorting: [
+        { id: 0, chosen: true, name: 'доходность к погашению' },
+        { id: 1, chosen: false, name: 'купонная доходность' }
+    ],
+    sortingDirection: true, // true - downwards, false - upwards
     maturityStartDate: AddYears(new Date(), 1),
-    maturityEndDate: AddYears(new Date(), 2),
+    maturityEndDate: AddYears(new Date(), 4),
     couponMonths: [
         { 'name': 'янв', active: true, id: 0 },
         { 'name': 'фев', active: true, id: 1 },
@@ -50,6 +51,8 @@ const settings = reactive({
         { id: 12, active: true, name: 'другие', tname: 'other' }]
 });
 
+const choosingFilter = ref(false);
+
 const vueFlatpickrIsStupid = reactive({
     g1: null,
     g2: null
@@ -59,8 +62,8 @@ function EmitSettings() {
     const settingsObj = { ...settings.value };
     settingsObj.couponMonths = settingsObj.couponMonths.filter(t => t.active).map(t => t.id);
     settingsObj.sectors = settingsObj.sectors.filter(t => t.active).map(t => t.tname);
-    emit('UpdateSettings', settings.value);
-    console.log(settings);
+    settingsObj.sorting = settingsObj.sorting.filter(t => t.chosen)[0].id;
+    emit('UpdateSettings', settingsObj);
 }
 
 onMounted(() => {
@@ -71,6 +74,31 @@ onMounted(() => {
 <template>
     <div class="flex flex-col overflow-auto pr-2">
         <div class="option-div">
+            <p class="option-title">сортировка</p>
+            <div class="flex flex-row">
+                <div v-if="choosingFilter" class="flex flex-col grow border-neutral-600 border-2 rounded-md">
+                    <button v-for="option of settings.sorting" class="sort-button" @click="() => {
+                        choosingFilter = false;
+                        settings.sorting = settings.sorting.map(t => {
+                            let newT = { ...t };
+                            newT.chosen = newT.id == option.id;
+                            return newT;
+                        });
+                    }">
+                        {{ option.name }}
+                    </button>
+                </div>
+                <button v-else class="grow self-center sort-button border-neutral-600 border-2"
+                    @click="choosingFilter = true">
+                    {{ settings.sorting.filter(t => t.chosen)[0].name }}
+                </button>
+                <button class="text-4xl p-1 self-center content-center text-center"
+                    @click="settings.sortingDirection = !settings.sortingDirection">
+                    {{ settings.sortingDirection ? '↓' : '↑' }}
+                </button>
+            </div>
+        </div>
+        <div class="option-div">
             <p class="option-title">дата погашения</p>
             <div class="flex flex-col gap-2 bg-neutral-200 p-2">
                 <div class="flex flex-row">
@@ -78,7 +106,7 @@ onMounted(() => {
                     <flat-pickr class="p-1 rounded-md self-center" v-model="vueFlatpickrIsStupid.g1" @on-close="(t) => {
                         const selectedDate = t[0];
                         settings.maturityStartDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 0);
-                        UpdateSettings();
+                        EmitSettings();
                     }" :config="{
     locale: Russian,
     defaultDate: settings.maturityStartDate,
@@ -97,7 +125,7 @@ onMounted(() => {
                     <flat-pickr class="p-1 rounded-md self-center" v-model="vueFlatpickrIsStupid.g2" @on-close="(t) => {
                         const selectedDate = t[0];
                         settings.maturityEndDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1);
-                        UpdateSettings();
+                        EmitSettings();
                     }" :config="{
     locale: Russian,
     defaultDate: settings.maturityEndDate,
@@ -114,7 +142,7 @@ onMounted(() => {
         </div>
         <div class="option-div">
             <p class="option-title">месяцы с купонами</p>
-            <div class="flex flex-col grow gap-1 flex-wrap max-h-40">
+            <div class="grid grid-cols-4 grow gap-1">
                 <div v-for="month of settings.couponMonths" key="id" class="flex flex-row">
                     <button
                         @click="() => { settings.couponMonths[month.id].active = !settings.couponMonths[month.id].active; EmitSettings() }"
@@ -128,7 +156,7 @@ onMounted(() => {
         </div>
         <div class="option-div">
             <p class="option-title">секторы</p>
-            <div class="flex flex-col gap-1 flex-wrap">
+            <div class="grid grid-cols-2 gap-1">
                 <div v-for="sector of settings.sectors" key="id" class="flex flex-row">
                     <button
                         @click="() => { settings.sectors[sector.id].active = !settings.sectors[sector.id].active; EmitSettings() }"
@@ -154,6 +182,10 @@ onMounted(() => {
 }
 
 .option-div {
-    @apply flex flex-col p-2 gap-2 pl-2
+    @apply flex flex-col p-1 gap-2
+}
+
+.sort-button {
+    @apply hover:bg-neutral-200 rounded-md p-1
 }
 </style>

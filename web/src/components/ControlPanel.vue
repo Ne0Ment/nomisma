@@ -8,7 +8,7 @@ const emit = defineEmits(['ChangeLoginState']);
 
 <template>
 <div class="flex flex-col flex-wrap gap-4 self-center mt-5">
-    <UpdateToken/>
+    <UpdateToken @logout="() => emit('ChangeLoginState', true)"/>
     <Logout @logout="() => emit('ChangeLoginState', false)"/>
 </div>
 </template>

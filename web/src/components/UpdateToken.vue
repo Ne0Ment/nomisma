@@ -4,6 +4,8 @@ import Cookies from 'js-cookie'
 import StatusDisplay from './StatusDisplay.vue';
 import FlashMessage from './FlashMessage.vue';
 
+const emit = defineEmits(['UpdateToken']);
+
 const serverUrl = "http://127.0.0.1:5000";
 
 const newToken = ref('');
@@ -43,6 +45,7 @@ function FetchConfCode() {
 
 function SendNewToken() {
     if (newToken.value != '' && confCode.value != '') {
+        emit('UpdateToken', newToken.value);
         confirmLoadStatus.value = 'loading';
         let tempKey = Cookies.get('temp-key')
         let payload = {

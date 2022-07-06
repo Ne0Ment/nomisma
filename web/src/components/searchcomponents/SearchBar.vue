@@ -10,6 +10,6 @@ function EmitSearch(t){
 </script>
 
 <template>
-<input type="search" class="text-xl p-2 border-neutral-400 border-2 rounded-xl"
+<input type="search" class="text-xl p-2 border-neutral-600 border-2 rounded-xl mr-4 "
     @keyup.enter.native="EmitSearch" v-model="searchValue"/>
 </template>

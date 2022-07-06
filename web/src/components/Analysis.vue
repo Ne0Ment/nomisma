@@ -45,7 +45,9 @@ const displayData = computed(() => {
                     all_pay: couponVal,
                     type: 'купон',
                     date: couponDate,
-                    portfolioName: bond.portfolioName
+                    portfolioName: bond.portfolioName,
+                    profitability: bond.profitability,
+                    coupon_profitability: bond.coupon_profitability
                 });
             }
         }
@@ -55,7 +57,7 @@ const displayData = computed(() => {
         for (const bond of chosenBonds.value) {
             repayDate = bond.maturity_date;
             year = repayDate.getUTCFullYear();
-            if (year<2000) {
+            if (year < 2000) {
                 continue;
             }
             month = repayDate.getUTCMonth();
@@ -74,7 +76,10 @@ const displayData = computed(() => {
                 all_pay: nominalVal,
                 type: 'погашение',
                 date: repayDate,
-                portfolioName: bond.portfolioName
+                portfolioName: bond.portfolioName,
+                profitability: bond.profitability,
+                coupon_profitability: bond.coupon_profitability,
+                market_sum: bond.market_price*bond.count
             });
             data[year].monthSum[month] += nominalVal;
         }
@@ -96,7 +101,7 @@ const displayData = computed(() => {
         data[currentYear] = {}
         data[currentYear].monthSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         return data
-    }    
+    }
 });
 
 function SetNewBonds(newBonds) {
@@ -113,7 +118,7 @@ function SetNewSettings(newSettings) {
     <div class="flex flex-row h-full mt-2 overflow-hidden gap-2">
         <DataDisplay :display-data="displayData" />
         <div class="flex flex-col gap-4">
-            <PortfolioDisplay @update-bonds="SetNewBonds" v-if="portfolios!=[]" :portfolios="portfolios" />
+            <PortfolioDisplay @update-bonds="SetNewBonds" v-if="portfolios != []" :portfolios="portfolios" />
             <CalcSettings @update-settings="SetNewSettings" />
         </div>
     </div>

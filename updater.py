@@ -9,10 +9,13 @@ import time
 def quotation2float(quot):
     return float(str(quot.units)+"."+str(quot.nano))
 
-
 def CouponProfitability(bond):
     coupons = sum([i['pay_one_bond'] for i in bond.coupons])
     return coupons/bond.nominal/(bond.maturity_date-pytz.UTC.localize(datetime.now())).days*365
+
+def Profitability(bond):
+    coupons = sum([i['pay_one_bond'] for i in bond.coupons]) + (bond.nominal-bond.market_price)
+    return coupons/bond.market_price/(bond.maturity_date-pytz.UTC.localize(datetime.now())).days*365
 
 
 client = pymongo.MongoClient("localhost", 27017)
@@ -20,12 +23,12 @@ db = client['nomisma-db']
 tinkoffToken = 't.CbJu2z3-n0MfU9Dbtbk9kxlGvnml00A7upkA6WvXDjQcpwmtqQyyJ4z00oS17cMfVFO_twNOZ5OcdHvMLyHbwg'
 
 with Client(tinkoffToken) as tinkoff:
-    all_bonds = tinkoff.instruments.bonds().instruments
+    all_bonds = [i for i in tinkoff.instruments.bonds().instruments if i.currency=='rub']
     prices = tinkoff.market_data.get_last_prices(
         figi=[i.figi for i in all_bonds]).last_prices
     price_dict = {}
     for i in prices:
-        price_dict[i.figi] = quotation2float(i.price)*10
+        price_dict[i.figi] = i.price
     for bond in all_bonds:
         bond.klong = quotation2float(bond.klong)
         bond.kshort = quotation2float(bond.kshort)
@@ -43,7 +46,7 @@ with Client(tinkoffToken) as tinkoff:
         bond.aci_value = quotation2float(bond.aci_value)
         bond.trading_status = bond.trading_status._value_
 
-        bond.market_price = price_dict[bond.figi]
+        bond.market_price = bond.nominal/100*quotation2float(price_dict[bond.figi])
 
         bond._id = bond.figi
         try:
@@ -59,6 +62,7 @@ with Client(tinkoffToken) as tinkoff:
                 coupons.append(coupon)
             bond.coupons = coupons
             bond.coupon_profitability = CouponProfitability(bond)
+            bond.profitability = Profitability(bond)
         except Exception as e:
             pass
         time.sleep(0.25)

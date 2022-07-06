@@ -43,7 +43,7 @@ function ChangePortfolioDisplay(newId) {
     <div class="flex flex-row border-b-4">
         <h1 class="text-3xl font-bold mr-5 m-auto">облиги</h1>
         <div class="flex flex-col m-auto border-2 border-neutral-500 rounded-lg">
-            <button class="self-start py-1 px-3" @click="() => { displayDropDown = true; displayPortfolio = false }">
+            <button class="self-start py-1 px-3 hover:bg-neutral-200" @click="() => { displayDropDown = true; displayPortfolio = false }">
                 {{ options[chosenOption].value + ' руб' }}
             </button>
             <div class="optionsDiv overflow-clip"
