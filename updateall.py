@@ -17,7 +17,6 @@ def Profitability(bond):
     coupons = sum([i['pay_one_bond'] for i in bond.coupons]) + (bond.nominal-bond.market_price)
     return coupons/bond.market_price/(bond.maturity_date-pytz.UTC.localize(datetime.now())).days*365
 
-
 client = pymongo.MongoClient("localhost", 27017)
 db = client['nomisma-db']
 tinkoffToken = 't.CbJu2z3-n0MfU9Dbtbk9kxlGvnml00A7upkA6WvXDjQcpwmtqQyyJ4z00oS17cMfVFO_twNOZ5OcdHvMLyHbwg'
@@ -65,7 +64,7 @@ with Client(tinkoffToken) as tinkoff:
             bond.profitability = Profitability(bond)
         except Exception as e:
             pass
-        time.sleep(0.25)
+        time.sleep(0.5)
 
 bonds_dicts = [vars(i) for i in all_bonds]
 for bond in bonds_dicts:

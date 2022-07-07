@@ -116,7 +116,7 @@ class DBHandler():
                     bond['count'] = portfolio['bonds'][bond['figi']]
                 portfolio['bonds'] = bonds
             return {'status': True, 'portfolios': portfolios}
-        else:
+        else:   
             return self.WrongTempKey()
     
     async def UpdatePortfolios(self, tempKey):

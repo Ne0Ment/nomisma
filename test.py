@@ -4,9 +4,9 @@ from db import DBHandler
 
 async def main():
     db = DBHandler()
-    tempKey = '4a5377c7804ecbfb715d818789ae77409f66713cdad9bc30be0d6b2e9b8e7c5a7d94e6541ac2c5fef3b67726d0cf30d864e055f0ced525aee40064eb2c19835c09a6a21f47cc79c4fef1ecb6be73caa96d11e8ddf5776ef1100a638835fbf561c166506a5612dfa4ce03c59319b5f7a681a2b7cb6d1c0d6fd53166c6096dfb97'
+    tempKey = '5ec9658b7acb091c24331b3bcc5d7e6483e6bd990c4cd3b639460c6137336a6a25ce6489def78b503187163f220243aa42ad7a77549f4b93159c8b438210b423adc053d545366b29c7f3b6d8ee3002b93e743a3dd00c4151152dd2d1d8a335407a5e7f1931e9fd0ccf9b07be2d245907d466d0b4c623bf3557484915a9ab640c'
     
-    await db.GetAllBonds();
+    print(await db.GetPortfolioSums(tempKey))
 
 
 asyncio.run(main())

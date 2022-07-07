@@ -17,7 +17,7 @@ const emit = defineEmits(['UpdateSettings'])
 const settings = ref({
     sorting: [
         { id: 0, chosen: true, name: 'доходность к погашению' },
-        { id: 1, chosen: false, name: 'купонная доходность' }
+        { id: 1, chosen: false, name: 'текущая доходность' }
     ],
     sortingDirection: true, // true - downwards, false - upwards
     maturityStartDate: AddYears(new Date(), 1),
@@ -35,6 +35,10 @@ const settings = ref({
         { 'name': 'окт', active: true, id: 9 },
         { 'name': 'ноя', active: true, id: 10 },
         { 'name': 'дек', active: true, id: 11 }],
+    couponSelectMode: [
+        { id: 0, active: false, name: 'один' },
+        { id: 1, active: true, name: 'все' }
+    ],
     sectors: [
         { id: 0, active: true, name: 'государственный', tname: 'government' },
         { id: 1, active: true, name: 'муниципальный', tname: 'municipal' },
@@ -52,17 +56,18 @@ const settings = ref({
 });
 
 const choosingFilter = ref(false);
-
+const choosingMonthMode = ref(false);
 const vueFlatpickrIsStupid = reactive({
     g1: null,
     g2: null
-})
+});
 
 function EmitSettings() {
     const settingsObj = { ...settings.value };
     settingsObj.couponMonths = settingsObj.couponMonths.filter(t => t.active).map(t => t.id);
     settingsObj.sectors = settingsObj.sectors.filter(t => t.active).map(t => t.tname);
     settingsObj.sorting = settingsObj.sorting.filter(t => t.chosen)[0].id;
+    settingsObj.couponSelectMode = settingsObj.couponSelectMode.filter(t => t.active)[0].id;
     emit('UpdateSettings', settingsObj);
 }
 
@@ -72,11 +77,11 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-col overflow-auto pr-2">
+    <div class="flex flex-col overflow-auto pr-2 min-w-max">
         <div class="option-div">
             <p class="option-title">сортировка</p>
             <div class="flex flex-row">
-                <div v-if="choosingFilter" class="flex flex-col grow border-neutral-600 border-2 rounded-md">
+                <div v-if="choosingFilter" class="flex flex-col grow border-neutral-600 border-2">
                     <button v-for="option of settings.sorting" class="sort-button" @click="() => {
                         choosingFilter = false;
                         settings.sorting = settings.sorting.map(t => {
@@ -84,6 +89,7 @@ onMounted(() => {
                             newT.chosen = newT.id == option.id;
                             return newT;
                         });
+                        EmitSettings();
                     }">
                         {{ option.name }}
                     </button>
@@ -93,7 +99,7 @@ onMounted(() => {
                     {{ settings.sorting.filter(t => t.chosen)[0].name }}
                 </button>
                 <button class="text-4xl p-1 self-center content-center text-center"
-                    @click="settings.sortingDirection = !settings.sortingDirection">
+                    @click="{ settings.sortingDirection = !settings.sortingDirection; EmitSettings(); }">
                     {{ settings.sortingDirection ? '↓' : '↑' }}
                 </button>
             </div>
@@ -103,7 +109,7 @@ onMounted(() => {
             <div class="flex flex-col gap-2 bg-neutral-200 p-2">
                 <div class="flex flex-row">
                     <p class="pr-2 self-center">от:</p>
-                    <flat-pickr class="p-1 rounded-md self-center" v-model="vueFlatpickrIsStupid.g1" @on-close="(t) => {
+                    <flat-pickr class="p-1 self-center" v-model="vueFlatpickrIsStupid.g1" @on-close="(t) => {
                         const selectedDate = t[0];
                         settings.maturityStartDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 0);
                         EmitSettings();
@@ -122,7 +128,7 @@ onMounted(() => {
                 </div>
                 <div class="flex flex-row">
                     <p class="pr-2 self-center">до:</p>
-                    <flat-pickr class="p-1 rounded-md self-center" v-model="vueFlatpickrIsStupid.g2" @on-close="(t) => {
+                    <flat-pickr class="p-1 self-center" v-model="vueFlatpickrIsStupid.g2" @on-close="(t) => {
                         const selectedDate = t[0];
                         settings.maturityEndDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth() + 1);
                         EmitSettings();
@@ -141,12 +147,35 @@ onMounted(() => {
             </div>
         </div>
         <div class="option-div">
-            <p class="option-title">месяцы с купонами</p>
+            <div class="flex flex-row">
+                <p class="option-title">месяцы с купонами</p>
+                <button v-if="!choosingMonthMode" @click="() => { choosingMonthMode = true }"
+                    class="ml-auto hover:bg-neutral-200 border-2 px-1 border-neutral-500"> {{ settings.couponSelectMode.filter(t =>
+                            t.active)[0].name
+                    }} </button>
+                <div class="ml-auto flex flex-col border-2 border-neutral-500" v-else>
+                    <button class="hover:bg-neutral-200 px-1" v-for="couponMode of settings.couponSelectMode" @click="() => {
+                        choosingMonthMode = false;
+                        settings.couponSelectMode = settings.couponSelectMode.map(t => {
+                            const newT = {...t};
+                            if (newT.id==couponMode.id) {
+                                newT.active = true;
+                            } else {
+                                newT.active = false;
+                            }
+                            return newT;
+                        });
+                        EmitSettings();
+                    }">
+                        {{ couponMode.name }}
+                    </button>
+                </div>
+            </div>
             <div class="grid grid-cols-4 grow gap-1">
                 <div v-for="month of settings.couponMonths" key="id" class="flex flex-row">
                     <button
                         @click="() => { settings.couponMonths[month.id].active = !settings.couponMonths[month.id].active; EmitSettings() }"
-                        class="p-1 rounded-md basis-1 grow hover:bg-neutral-200 hover:text-black" :class="month.active
+                        class="p-1 basis-1 grow hover:bg-neutral-200 hover:text-black" :class="month.active
                         ? 'text-black border-2 border-neutral-600'
                         : 'border-2 border-neutral-200 text-neutral-500'">
                         {{ month.name }}
@@ -160,7 +189,7 @@ onMounted(() => {
                 <div v-for="sector of settings.sectors" key="id" class="flex flex-row">
                     <button
                         @click="() => { settings.sectors[sector.id].active = !settings.sectors[sector.id].active; EmitSettings() }"
-                        class="p-1 rounded-md basis-1 grow hover:bg-neutral-200 hover:text-black" :class="sector.active
+                        class="p-1 basis-1 grow hover:bg-neutral-200 hover:text-black" :class="sector.active
                         ? 'text-black border-2 border-neutral-600'
                         : 'border-2 border-neutral-200 text-neutral-500'">
                         {{ sector.name }}
@@ -186,6 +215,6 @@ onMounted(() => {
 }
 
 .sort-button {
-    @apply hover:bg-neutral-200 rounded-md p-1
+    @apply hover:bg-neutral-200 p-1
 }
 </style>

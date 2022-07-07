@@ -36,7 +36,7 @@ if (Cookies.get('main-tab')) {
 function FetchSums() {
   let tempKey = Cookies.get('temp-key')
   let payload = {
-    method: "POST",
+    method: "POST", 
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ temp_key: tempKey })
   }
@@ -87,7 +87,6 @@ function FetchPortfolios() {
         portfolios.value = [];
         fetched.value = true;
       }
-      console.log(portfolios.value)
     });
 }
 
@@ -144,7 +143,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto">
+  <div class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto select-none">
     <KeepAlive>
       <Head :tabs="tabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
     </KeepAlive>

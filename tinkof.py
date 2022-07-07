@@ -17,3 +17,6 @@ async def FetchPortfolios(tinkoffToken):
                     bonds[i.figi] = quotation2float(i.quantity_lots)
             portfolios.append({'name': account.name, 'bonds':bonds})
         return portfolios
+async def FetchPrices(figis, tinkoffToken):
+    async with AsyncClient(tinkoffToken) as tinkoff:
+        return (await tinkoff.market_data.get_last_prices(figi=figis)).last_prices
