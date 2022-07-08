@@ -45,8 +45,8 @@ function FetchSums() {
     .then(t => JSON.parse(t))
     .then(t => {
       if (t.status) {
-        sums.nominalValue = t.nominal_sum.toLocaleString('en-US');
-        sums.marketValue = t.market_sum.toLocaleString('en-US');
+        sums.nominalValue = parseFloat(t.nominal_sum.toFixed(0)).toLocaleString('en-US');
+        sums.marketValue = parseFloat(t.market_sum.toFixed(0)).toLocaleString('en-US');
       } else {
         sums.nominalValue = '0';
         sums.marketValue = '0';

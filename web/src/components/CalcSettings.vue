@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 
 const emit = defineEmits(['UpdateSettings']);
 
@@ -16,6 +16,9 @@ function EmitSettings() {
     }
     emit('UpdateSettings', emitSettings);
 }
+onMounted(() => {
+    EmitSettings();
+});
 
 </script>
 

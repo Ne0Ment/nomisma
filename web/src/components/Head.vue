@@ -17,7 +17,7 @@ const chosenOption = ref(0);
 
 const options = computed(() => {
     return [{ id: 0, value: props.sums.nominalValue, text: 'номинальная стоимость: ' },
-            { id: 1, value: props.sums.marketValue, text: 'рыночная стоимость: ' }]
+    { id: 1, value: props.sums.marketValue, text: 'рыночная стоимость: ' }]
 });
 
 if (Cookies.get('head-portfolio')) {
@@ -42,16 +42,17 @@ function ChangePortfolioDisplay(newId) {
 <template>
     <div class="flex flex-row border-b-4">
         <h1 class="text-3xl font-bold mr-5 m-auto">облиги</h1>
-        <div class="flex flex-col m-auto border-2 border-neutral-500 rounded-lg">
-            <button class="self-start py-1 px-3 hover:bg-neutral-200" @click="() => { displayDropDown = true; displayPortfolio = false }">
-                {{ options[chosenOption].value + ' руб' }}
+        <div class="flex flex-col m-auto border-2 shadow-xl">
+            <button class="self-start py-1 px-3 hover:bg-neutral-200"
+                @click="() => { displayDropDown = true; displayPortfolio = false }">
+                {{ options[chosenOption].value + ' р' }}
             </button>
-            <div class="optionsDiv overflow-clip"
+            <div class="absolute optionsDiv overflow-clip z-10 bg-white shadow-xl"
                 :class="{ 'max-h-20 max-w-lg': displayDropDown, 'max-h-0 max-w-0': !displayDropDown }">
                 <div class="flex flex-col max-h-full truncate">
-                    <button class=" hover:bg-neutral-200 rounded-lg p-1" v-for="option of options"
+                    <button class=" hover:bg-neutral-200 p-1" v-for="option of options"
                         @click="() => ChangePortfolioDisplay(option.id)">
-                        {{ option.text + ' ' + option.value + ' руб' }}
+                        {{ option.text + ' ' + option.value + ' р' }}
                     </button>
                 </div>
             </div>

@@ -81,7 +81,7 @@ onMounted(() => {
         <div class="option-div">
             <p class="option-title">сортировка</p>
             <div class="flex flex-row">
-                <div v-if="choosingFilter" class="flex flex-col grow border-neutral-600 border-2">
+                <div v-if="choosingFilter" class="absolute bg-white flex flex-col grow border-neutral-600 border-2 shadow-xl">
                     <button v-for="option of settings.sorting" class="sort-button" @click="() => {
                         choosingFilter = false;
                         settings.sorting = settings.sorting.map(t => {
@@ -147,13 +147,13 @@ onMounted(() => {
             </div>
         </div>
         <div class="option-div">
-            <div class="flex flex-row">
-                <p class="option-title">месяцы с купонами</p>
+            <div class="flex flex-row-reverse">
+                
                 <button v-if="!choosingMonthMode" @click="() => { choosingMonthMode = true }"
                     class="ml-auto hover:bg-neutral-200 border-2 px-1 border-neutral-500"> {{ settings.couponSelectMode.filter(t =>
                             t.active)[0].name
                     }} </button>
-                <div class="ml-auto flex flex-col border-2 border-neutral-500" v-else>
+                <div class="absolute bg-white ml-auto flex flex-col border-2 border-neutral-500" v-else>
                     <button class="hover:bg-neutral-200 px-1" v-for="couponMode of settings.couponSelectMode" @click="() => {
                         choosingMonthMode = false;
                         settings.couponSelectMode = settings.couponSelectMode.map(t => {
@@ -170,6 +170,7 @@ onMounted(() => {
                         {{ couponMode.name }}
                     </button>
                 </div>
+                <p class="option-title mr-auto">месяцы с купонами</p>
             </div>
             <div class="grid grid-cols-4 grow gap-1">
                 <div v-for="month of settings.couponMonths" key="id" class="flex flex-row">
