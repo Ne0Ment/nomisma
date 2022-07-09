@@ -45,7 +45,7 @@ const chartOptions = computed(() => {
                 mode: 'index'
             }
         },
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         aspectRatio: 2,
         onClick: (e) => {
             let found = chartElem.value.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)[0];

@@ -151,11 +151,11 @@ onMounted(() => {
             <div class="flex flex-row-reverse gap-3">
                 <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
                     @click="{settings.couponMonths = settings.couponMonths.map((t) => { return { ...t, active: false }}); EmitSettings();}">
-                    ничто
+                    𐄂
                 </button>
                 <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
                     @click="{settings.couponMonths = settings.couponMonths.map((t) => { return { ...t, active: true } }); EmitSettings();}">
-                    все
+                    ✓
                 </button>
                 <!--
                 <button v-if="!choosingMonthMode" @click="() => { choosingMonthMode = true }"
@@ -200,11 +200,11 @@ onMounted(() => {
             <div class="flex flex-row-reverse gap-3">
                 <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
                     @click="{settings.sectors = settings.sectors.map((t) => { return { ...t, active: false } }); EmitSettings();}">
-                    ничто
+                    𐄂
                 </button>
                 <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
                     @click="{settings.sectors = settings.sectors.map((t) => { return { ...t, active: true } }); EmitSettings();}">
-                    все
+                    ✓
                 </button>
                 <p class="option-title mr-auto">секторы</p>
             </div>

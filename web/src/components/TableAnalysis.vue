@@ -18,6 +18,10 @@ const sorterFn = ref((bond) => bond.coupon_profitability);
 const chosenSort = ref(3);
 const reverseSort = ref(false);
 
+const bondsSum = computed(() => {
+    return bonds.value.map(t => t.count*t.market_price).reduce((a,b) => (a+b), 0);
+});
+
 function CalcBonds() {
     let figis = [];
     let a = [];
@@ -82,10 +86,10 @@ function SetSort(n) {
             sorterFn.value = ((bond) => bond.market_price / bond.nominal)
             break;
         case 3:
-            sorterFn.value = ((bond) => bond.profitability);
+            sorterFn.value = ((bond) => Number(bond.coupon_profitability));
             break;
         case 4:
-            sorterFn.value = ((bond) => bond.coupon_profitability);
+            sorterFn.value = ((bond) => Number(bond.profitability));
             break;
     }
     CalcBonds();
@@ -105,19 +109,19 @@ function SetSort(n) {
                         <p>наименование</p>
                     </th>
                     <th @click="SetSort(0)" :class="chosenSort==0 ? 'active-sort' : ''">
-                        <p>кол-во</p>
+                        <p class="min-w-max">кол-во</p>
                     </th>
                     <th @click="SetSort(1)" :class="chosenSort==1 ? 'active-sort' : ''">
-                        <p>сумма</p>
+                        <p class="min-w-max">сумма</p>
                     </th>
                     <th @click="SetSort(2)" :class="chosenSort==2 ? 'active-sort' : ''">
-                        <p>% от номин</p>
+                        <p class="min-w-max">% от номин</p>
                     </th>
                     <th @click="SetSort(3)" :class="chosenSort==3 ? 'active-sort' : ''">
-                        <p>тек. доход.</p>
+                        <p class="min-w-max">тек. доход.</p>
                     </th>
                     <th @click="SetSort(4)" :class="chosenSort==4 ? 'active-sort' : ''">
-                        <p>дох. к погаш.</p>
+                        <p class="min-w-max">дох. к погаш.</p>
                     </th>
                 </tr>
             </thead>
@@ -146,6 +150,23 @@ function SetSort(n) {
                     </td>
                 </tr>
             </tbody>
+            <tfoot class="bg-white sticky bottom-0 border-b">
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="bg-neutral-200"> {{ bondsSum.toFixed(0) }} </td>
+                    <td class="bg-neutral-200">
+                         {{ (bonds.map(t => (t.market_price/t.nominal)*(t.market_price*t.count)*100).reduce((a,b) => (a+b), 0)/bondsSum).toFixed(1) }}% 
+                    </td>
+                    <td class="bg-neutral-200">
+                        {{ (bonds.map(t => t.coupon_profitability*(t.market_price*t.count)*100).reduce((a,b) => (a+b), 0)/bondsSum).toFixed(1) }}%
+                    </td>
+                    <td class="bg-neutral-200">
+                        {{ (bonds.map(t => t.profitability*(t.market_price*t.count)*100).reduce((a,b) => (a+b), 0)/bondsSum).toFixed(1) }}%
+                    </td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 

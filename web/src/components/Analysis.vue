@@ -163,6 +163,7 @@ const groupBy = function (xs, key) {
 function SetNewBonds(newBonds) {
     chosenBonds.value = newBonds;
     selectedGroup.value = 0;
+    filterKey.value += 1;
 }
 
 function SetNewSettings(newSettings) {
@@ -181,7 +182,7 @@ function SelectFilters(t) {
     filters.value = t;
     filterKey.value += 1;
 }
-const tab = ref(2);
+const tab = ref(0);
 
 </script>
 

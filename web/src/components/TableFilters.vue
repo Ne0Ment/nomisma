@@ -92,6 +92,7 @@ function EmitFilters() {
 }
 
 onMounted(() => {
+    CalcFilters();
     EmitFilters();
 });
 
@@ -116,10 +117,10 @@ function All(key) {
         <div v-for="(i, k) of filters" class="flex flex-col">
             <div class="flex flex-row-reverse gap-2">
                 <button class="selector-button" @click="Clear(k)">
-                    ничто
+                    𐄂
                 </button>
                 <button class="selector-button" @click="All(k)">
-                    все
+                    ✓
                 </button>
                 <p class="text-lg mr-auto"> {{ allowNames[k] }} </p>
             </div>
@@ -136,6 +137,6 @@ function All(key) {
 
 <style>
 .selector-button {
-    @apply border-neutral-200 hover:bg-neutral-200 border-2 px-1 h-fit self-center whitespace-nowrap
+    @apply border-neutral-200 hover:bg-neutral-200 border-2 self-center text-center h-fit
 }
 </style>
