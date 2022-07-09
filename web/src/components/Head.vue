@@ -57,7 +57,7 @@ function ChangePortfolioDisplay(newId) {
                 </div>
             </div>
         </div>
-        <div class="flex flex-row-reverse gap-2 grow">
+        <div class="flex flex-row-reverse gap-1 grow">
             <div v-for="tab of tabs" class="pb-2">
                 <button @click="ChangeTab(tab.id)" :class="tab.id == chosenTab ? 'activebutton' : 'passivebutton'"
                     :disabled="tab.id == chosenTab">

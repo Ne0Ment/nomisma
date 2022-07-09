@@ -36,7 +36,7 @@ const { stop } = useIntersectionObserver(
 </script>
 
 <template>
-    <div ref="targetEl" class="p-2 hover:bg-neutral-200 border-2 border-neutral-400 rounded-md mr-4 text-base"
+    <div ref="targetEl" class="p-2 hover:bg-neutral-200 border-2 border-neutral-400 mr-4 text-base"
         @click="{ displayOptions = !displayOptions; }">
         <div v-if="shouldRender" class="flex flex-row">
             <div class="flex flex-col overflow-hidden">

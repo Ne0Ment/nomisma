@@ -36,8 +36,8 @@ const settings = ref({
         { 'name': 'ноя', active: true, id: 10 },
         { 'name': 'дек', active: true, id: 11 }],
     couponSelectMode: [
-        { id: 0, active: false, name: 'один' },
-        { id: 1, active: true, name: 'все' }
+        { id: 0, active: true, name: 'один' },
+        { id: 1, active: false, name: 'все' }
     ],
     sectors: [
         { id: 0, active: true, name: 'государственный', tname: 'government' },
@@ -81,7 +81,8 @@ onMounted(() => {
         <div class="option-div">
             <p class="option-title">сортировка</p>
             <div class="flex flex-row">
-                <div v-if="choosingFilter" class="absolute bg-white flex flex-col grow border-neutral-600 border-2 shadow-xl">
+                <div v-if="choosingFilter"
+                    class="absolute bg-white flex flex-col grow border-neutral-600 border-2 shadow-xl">
                     <button v-for="option of settings.sorting" class="sort-button" @click="() => {
                         choosingFilter = false;
                         settings.sorting = settings.sorting.map(t => {
@@ -147,18 +148,28 @@ onMounted(() => {
             </div>
         </div>
         <div class="option-div">
-            <div class="flex flex-row-reverse">
-                
+            <div class="flex flex-row-reverse gap-3">
+                <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
+                    @click="{settings.couponMonths = settings.couponMonths.map((t) => { return { ...t, active: false }}); EmitSettings();}">
+                    ничто
+                </button>
+                <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
+                    @click="{settings.couponMonths = settings.couponMonths.map((t) => { return { ...t, active: true } }); EmitSettings();}">
+                    все
+                </button>
+                <!--
                 <button v-if="!choosingMonthMode" @click="() => { choosingMonthMode = true }"
-                    class="ml-auto hover:bg-neutral-200 border-2 px-1 border-neutral-500"> {{ settings.couponSelectMode.filter(t =>
-                            t.active)[0].name
+                    class="ml-auto hover:bg-neutral-200 border-2 px-1 border-neutral-500"> {{
+                            settings.couponSelectMode.filter(t =>
+                                t.active)[0].name
                     }} </button>
+                
                 <div class="absolute bg-white ml-auto flex flex-col border-2 border-neutral-500" v-else>
                     <button class="hover:bg-neutral-200 px-1" v-for="couponMode of settings.couponSelectMode" @click="() => {
                         choosingMonthMode = false;
                         settings.couponSelectMode = settings.couponSelectMode.map(t => {
-                            const newT = {...t};
-                            if (newT.id==couponMode.id) {
+                            const newT = { ...t };
+                            if (newT.id == couponMode.id) {
                                 newT.active = true;
                             } else {
                                 newT.active = false;
@@ -170,6 +181,7 @@ onMounted(() => {
                         {{ couponMode.name }}
                     </button>
                 </div>
+                -->
                 <p class="option-title mr-auto">месяцы с купонами</p>
             </div>
             <div class="grid grid-cols-4 grow gap-1">
@@ -185,7 +197,18 @@ onMounted(() => {
             </div>
         </div>
         <div class="option-div">
-            <p class="option-title">секторы</p>
+            <div class="flex flex-row-reverse gap-3">
+                <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
+                    @click="{settings.sectors = settings.sectors.map((t) => { return { ...t, active: false } }); EmitSettings();}">
+                    ничто
+                </button>
+                <button class="border-2 px-1 border-neutral-300 hover:bg-neutral-200 shadow-lg"
+                    @click="{settings.sectors = settings.sectors.map((t) => { return { ...t, active: true } }); EmitSettings();}">
+                    все
+                </button>
+                <p class="option-title mr-auto">секторы</p>
+            </div>
+
             <div class="grid grid-cols-2 gap-1">
                 <div v-for="sector of settings.sectors" key="id" class="flex flex-row">
                     <button

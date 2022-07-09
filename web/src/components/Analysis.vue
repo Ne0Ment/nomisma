@@ -7,6 +7,9 @@ import CalcSettings from './CalcSettings.vue';
 import DataDisplay from './DataDisplay.vue';
 import PieAnalysis from './PieAnalysis.vue';
 import PieSettings from './PieSettings.vue';
+import TableAnalysis from './TableAnalysis.vue';
+import TableFilters from './TableFilters.vue';
+import { set } from '@vueuse/core';
 
 const props = defineProps({
     portfolios: Array
@@ -17,6 +20,8 @@ const chosenBonds = ref([]);
 const calcSettings = ref();
 const pieMode = ref();
 const selectedGroup = ref(0);
+const filters = ref([]);
+const filterKey = ref(0);
 
 const displayData = computed(() => {
     if (calcSettings.value) {
@@ -114,17 +119,34 @@ const displayData = computed(() => {
 const pieGroups = computed(() => {
     const pieKeys = {
         0: 'sector',
-        1: 'maturtyYear',
-        2: 'amortization_flag',
-        3: 'floating_coupon_flag'
+        1: 'maturityYear',
+        2: 'coupon_quantity_per_year',
+        3: 'amortization_flag',
+        4: 'floating_coupon_flag'
+    }
+    const sectorMap = {
+        government: 'государственый',
+        consumer: 'потребительский',
+        financial: 'финансовый',
+        real_estate: 'недвижимость',
+        industrials: 'индустриальный',
+        it: 'ит',
+        telecom: 'телеком',
+        materials: 'материалы',
+        energy: 'энергетика',
+        other: 'другое',
+        health_care: 'здравоохранение',
+        municipal: 'муниципальный',
+        true: 'да',
+        false: 'нет'
     }
     const vals = groupBy(chosenBonds.value, pieKeys[pieMode.value]);
     let groups = [];
     for (const [key, val] of Object.entries(vals)) {
         groups.push({
-            key: key,
+            key: sectorMap[key] || key,
             bonds: val,
-            sum: val.map(t => t.market_price * t.count).reduce((a, b) => a + b, 0)
+            sum: Number(val.map(t => t.market_price * t.count).reduce((a, b) => a + b, 0).toFixed(0))
         });
     }
     return sort(groups).desc(t => t.sum);
@@ -154,12 +176,17 @@ function SetNewPieSettings(newSettings) {
 function SelectGroup(t) {
     selectedGroup.value = t;
 }
-const tab = ref(1);
+
+function SelectFilters(t) {
+    filters.value = t;
+    filterKey.value += 1;
+}
+const tab = ref(2);
 
 </script>
 
 <template>
-    <div class="flex flex-col">
+    <div class="flex flex-col overflow-hidden">
         <div class="flex flex-row gap-2 mt-2">
             <button class="hover:bg-neutral-600 hover:text-white rounded-md p-1"
                 :class="tab == 0 ? 'active-tab' : 'passive-tab'" @click="tab = 0">
@@ -169,18 +196,26 @@ const tab = ref(1);
                 :class="tab == 1 ? 'active-tab' : 'passive-tab'" @click="tab = 1">
                 анализ
             </button>
+            <button class="hover:bg-neutral-600 hover:text-white rounded-md p-1"
+                :class="tab == 2 ? 'active-tab' : 'passive-tab'" @click="tab = 2">
+                список
+            </button>
         </div>
         <div class="flex flex-row h-full mt-2 overflow-hidden gap-2">
-            <DataDisplay v-if="(tab == 0)" :display-data="displayData" />
-            <PieAnalysis v-if="(tab == 1)" :groups="pieGroups" :chosen-group="selectedGroup" @select-group="" />
+            <div class="flex flex-col grow gap-12">
+                <DataDisplay v-if="(tab == 0)" :display-data="displayData" />
+                <PieAnalysis v-if="(tab == 1)" :groups="pieGroups" :chosen-group="selectedGroup"
+                    @select-group="SelectGroup" />
+                <TableAnalysis v-if="(tab == 2)" :all-bonds="chosenBonds" :filters="filters" :n="filterKey"/>
+            </div>
             <div class="flex flex-col gap-4">
                 <PortfolioDisplay @update-bonds="SetNewBonds" v-if="portfolios != []" :portfolios="portfolios" />
-                <CalcSettings v-if="(tab == 0)" @update-settings="SetNewSettings" />
                 <PieSettings v-if="(tab == 1)" @new-options="SetNewPieSettings" />
+                <CalcSettings v-if="(tab == 0)" @update-settings="SetNewSettings" />
+                <TableFilters v-if="(tab == 2)" :all-bonds="chosenBonds" @emit-filters="SelectFilters" />
             </div>
         </div>
     </div>
-
 </template>
 
 <style>

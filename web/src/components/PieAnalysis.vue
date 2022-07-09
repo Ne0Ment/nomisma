@@ -2,8 +2,8 @@
 import { ref, onMounted, toRef, computed, watch } from 'vue';
 import chroma from "chroma-js";
 import { Pie } from 'vue-chartjs';
-import { Chart, ArcElement, Legend } from 'chart.js'
-Chart.register(ArcElement, Legend);
+import { Chart, ArcElement, Legend, Tooltip } from 'chart.js'
+Chart.register(ArcElement, Legend, Tooltip);
 
 const emit = defineEmits(['SelectGroup'])
 
@@ -22,7 +22,7 @@ const chartData = computed(() => {
         labels: groups.value ? groups.value.map(t => t.key) : [0],
         datasets: [{
             data: groups.value ? groups.value.map(t => t.sum) : [0]
-        }],
+        }]
     }
 });
 
@@ -40,10 +40,13 @@ const chartOptions = computed(() => {
                 position: 'left',
                 align: 'center',
                 display: true
+            },
+            tooltips: {
+                mode: 'index'
             }
         },
         maintainAspectRatio: true,
-        aspectRatio: 1.5,
+        aspectRatio: 2,
         onClick: (e) => {
             let found = chartElem.value.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)[0];
             if (found) {
@@ -56,7 +59,7 @@ const chartOptions = computed(() => {
 </script>
 
 <template>
-    <div class="m-auto w-1/2 flex flex-col content-start">
+    <div class="mx-auto w-full flex flex-col content-center mt-0 pt-0">
         <Pie :chart-data="chartData" :chart-options="chartOptions" ref="chartElem" class="mt-0 pt-0" />
     </div>
 </template>

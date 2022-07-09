@@ -72,6 +72,7 @@ function FetchPortfolios() {
           for (let i = 0; i < portfolios.value.length; i += 1) {
             portfolios.value[i].active = true;
             for (let j = 0; j < portfolios.value[i].bonds.length; j++) {
+              portfolios.value[i].bonds[j].maturityYear = new Date(Date.parse(portfolios.value[i].bonds[j].maturity_date)).getUTCFullYear();
               portfolios.value[i].bonds[j].portfolioName = portfolios.value[i].name;
               portfolios.value[i].bonds[j].maturity_date = new Date(Date.parse(portfolios.value[i].bonds[j].maturity_date))
               for (let k = 0; k < portfolios.value[i].bonds[j].coupons.length; k++) {
@@ -103,6 +104,7 @@ function FetchBonds() {
         bonds.value = t.bonds;
         for (let i = 0; i < bonds.value.length; i++) {
           bonds.value[i].maturity_date = new Date(Date.parse(bonds.value[i].maturity_date));
+          bonds.value[i].maturityYear = new Date(Date.parse(bonds.value[i].maturityYear)).getUTCFullYear();
           if (bonds.value[i].coupons) {
             for (let j = 0; j < bonds.value[i].coupons.length; j++) {
               bonds.value[i].coupons[j].coupon_date = new Date(Date.parse(bonds.value[i].coupons[j].coupon_date));
@@ -143,7 +145,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto select-none">
+  <div class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto">
     <KeepAlive>
       <Head :tabs="tabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
     </KeepAlive>
@@ -165,11 +167,11 @@ onMounted(() => {
 @tailwind utilities;
 
 .passivebutton {
-  @apply text-lg rounded-xl p-2 hover:bg-neutral-600 hover:text-white
+  @apply text-lg p-2 hover:bg-neutral-600 hover:text-white
 }
 
 .activebutton {
-  @apply text-lg rounded-xl p-2 bg-neutral-600 text-white
+  @apply text-lg p-2 bg-neutral-600 text-white
 }
 
 .formbutton {
