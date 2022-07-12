@@ -1,6 +1,4 @@
-from grpc import stream_stream_rpc_method_handler
 import quart
-from quart import request
 from dataclasses import dataclass
 from quart_cors import cors
 from quart_schema import validate_request
@@ -30,45 +28,41 @@ async def mainPage():
 @app.route('/Login', methods=['POST'])
 async def CheckTelegramAuth():
     requestData = await quart.request.get_json()
+    if "id" not in requestData or not isinstance(requestData["id"], int):
+        return quart.abort(400)
+
     if CheckTelegramHash(requestData, telegramSecret):
         response = quart.jsonify(await db.LoginUser(requestData))
     else:
         response = quart.jsonify({'status': False})
     return response
 
-@validate_request(TempKeyData)
 @app.route('/GetConfCode', methods=['POST'])
-async def GetConfCode():
-    requestData = await quart.request.get_json()
+@validate_request(TempKeyData)
+async def GetConfCode(data: TempKeyData):
     confCode = RandomConfCode()
-    response = await db.SetConfCode(requestData['temp_key'], confCode)
+    response = await db.SetConfCode(data.temp_key, confCode)
     if response['status']==True:
-        telegramId = (await db.FindUser(tempKey=requestData['temp_key']))['telegram-id']
+        telegramId = (await db.FindUser(tempKey=data.temp_key))['telegram-id']
         await teleHandler.SendConfCode(telegramId, confCode)
     return quart.jsonify(response)
 
-@validate_request(SetNewTokenData)
 @app.route('/SetNewToken', methods=['POST'])
-async def SetNewToken():
-    requestData = await quart.request.get_json()
-    tempKey, newToken, confCode = requestData['temp_key'],requestData['new_token'],requestData['conf_code']
-    response = await db.UpdateToken(tempKey, confCode, newToken)
+@validate_request(SetNewTokenData)
+async def SetNewToken(data: SetNewTokenData):
+    response = await db.UpdateToken(data.temp_key, data.conf_code, data.new_token)
     return quart.jsonify(response)
 
-@validate_request(TempKeyData)
 @app.route('/GetPortfolios', methods=['POST'])
-async def GetPortfolios():
-    requestData = await quart.request.get_json()
-    tempKey = requestData['temp_key']
-    response = await db.GetPortfolios(tempKey)
+@validate_request(TempKeyData)
+async def GetPortfolios(data: TempKeyData):
+    response = await db.GetPortfolios(data.temp_key)
     return quart.jsonify(response)
 
-@validate_request(TempKeyData)
 @app.route('/GetPortfolioSums', methods=['POST'])
-async def GetPortfolioSums():
-    requestData = await quart.request.get_json()
-    tempKey = requestData['temp_key']
-    response = await db.GetPortfolioSums(tempKey)
+@validate_request(TempKeyData)
+async def GetPortfolioSums(data: TempKeyData):
+    response = await db.GetPortfolioSums(data.temp_key)
     return quart.jsonify(response)
     
 @app.route('/GetAllBonds', methods=['GET'])

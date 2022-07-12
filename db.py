@@ -1,8 +1,7 @@
+from functools import wraps
 import motor.motor_asyncio
 import secrets
-import asyncio
 import bcrypt
-from datetime import datetime
 from tinkof import FetchPortfolios
 from utility import Random128Hex, CalculateNominalPortfolio, CalculateMarketPortfolio
 
@@ -31,10 +30,10 @@ class DBHandler():
         
     async def GetByFigis(self, figis):
         return await self.db.bonds.find({
-                'figi': {
-                    '$in': figis
-                }
-                }).to_list(5000)
+            'figi': {
+                '$in': figis
+            }
+            }).to_list(5000)
 
     async def CreateTempKey(self, userId):
         tempKey = Random128Hex()
@@ -60,7 +59,7 @@ class DBHandler():
         }
         inserted = await self.db.users.insert_one(userObj)
         return {'status': True, 'temp_key': await self.CreateTempKey(inserted.inserted_id)}
-    
+
     async def LoginUser(self, user):
         foundUser = await self.FindUser(telegramId=user['id'])
         if foundUser:
@@ -68,86 +67,76 @@ class DBHandler():
         else:
             return await self.CreateUser(user)
 
-    async def SetConfCode(self, tempKey, confCode):
-        foundUser = await self.FindUser(tempKey=tempKey)
-        if foundUser:
+    def authorized(func):
+        @wraps(func)
+        async def wrapper(self, tempKey, *args, **kwargs):
+            if foundUser := await self.FindUser(tempKey=tempKey):
+                return await func(self, tempKey, foundUser, *args, **kwargs)
+            else:
+                return self.WrongTempKey()
+        return wrapper
+
+    @authorized
+    async def SetConfCode(self, tempKey, foundUser, confCode):
+        await self.db.users.update_one(
+            {
+                "temp-key": tempKey   
+            },
+            {
+                '$set': {
+                    "confirmation-code": confCode
+                }
+            })
+        return self.StatusTrue()
+
+    @authorized
+    async def UpdateToken(self, tempKey, foundUser, confCode, newToken):
+        if foundUser['confirmation-code']==confCode:
             await self.db.users.update_one(
-                    {
-                        "temp-key": tempKey   
-                    },
-                    {
-                        '$set': {
-                                "confirmation-code": confCode
-                        }
-                    })
+                {
+                    "temp-key": tempKey   
+                },
+                {
+                    '$set': {
+                        'confirmation-code': secrets.token_hex(128),
+                        'tinkoff-token': newToken
+                    }
+                })
+            await self.UpdatePortfolios(tempKey)
             return self.StatusTrue()
         else:
-            return self.WrongTempKey()
+            return self.WrongTempCode()
+    @authorized
+    async def GetPortfolios(self, tempKey, foundUser):
+        portfolios = foundUser['portfolios']
+        for portfolio in portfolios:
+            bonds = await self.GetByFigis(list(portfolio['bonds'].keys()))
+            for bond in bonds:
+                bond['count'] = portfolio['bonds'][bond['figi']]
+            portfolio['bonds'] = bonds
+        return {'status': True, 'portfolios': portfolios}
 
-    async def UpdateToken(self, tempKey, confCode, newToken):
-        foundUser = await self.FindUser(tempKey=tempKey)
-        if foundUser:
-            if foundUser['confirmation-code']==confCode:
-                await self.db.users.update_one(
-                    {
-                        "temp-key": tempKey   
-                    },
-                    {
-                        '$set': {
-                                'confirmation-code': secrets.token_hex(128),
-                                'tinkoff-token': newToken
-                        }
-                    })
-                await self.UpdatePortfolios(tempKey)
-                return self.StatusTrue()
-            else:
-                return self.WrongTempCode()
-            
+    @authorized
+    async def UpdatePortfolios(self, tempKey, foundUser):
+        if tinkoffToken := foundUser['tinkoff-token']:
+            portfolios = await FetchPortfolios(tinkoffToken)
+            await self.db.users.update_one(
+                {
+                    "temp-key": tempKey   
+                },
+                {
+                    '$set': {
+                        'portfolios': portfolios
+                    }
+                })
+            return self.StatusTrue()
         else:
-            return self.WrongTempKey()
+            return {'status': False, 'error':'token_not_initialized'}
 
-    async def GetPortfolios(self, tempKey):
-        foundUser = await self.FindUser(tempKey=tempKey)
-        if foundUser:
-            portfolios = foundUser['portfolios']
-            for portfolio in portfolios:
-                bonds = await self.GetByFigis(list(portfolio['bonds'].keys()))
-                for bond in bonds:
-                    bond['count'] = portfolio['bonds'][bond['figi']]
-                portfolio['bonds'] = bonds
-            return {'status': True, 'portfolios': portfolios}
-        else:   
-            return self.WrongTempKey()
-    
-    async def UpdatePortfolios(self, tempKey):
-        foundUser = await self.FindUser(tempKey=tempKey)
-        if foundUser:
-            tinkoffToken = foundUser['tinkoff-token']
-            if tinkoffToken:
-                portfolios = await FetchPortfolios(tinkoffToken)
-                await self.db.users.update_one(
-                    {
-                        "temp-key": tempKey   
-                    },
-                    {
-                        '$set': {
-                                'portfolios': portfolios
-                        }
-                    })
-                return self.StatusTrue()
-            else:
-                return {'status': False, 'error':'token_not_initialized'}
-
-        else:
-            return self.WrongTempKey()
-
-    async def GetPortfolioSums(self, tempKey):
-        foundUser = await self.FindUser(tempKey=tempKey)
-        if foundUser:
-            portfolios = (await self.GetPortfolios(tempKey))['portfolios']
-            return {'status': True, 'market_sum': CalculateMarketPortfolio(portfolios), 'nominal_sum': CalculateNominalPortfolio(portfolios)}
-        else:
-            return self.WrongTempKey()
+    @authorized
+    async def GetPortfolioSums(self, tempKey, foundUser):
+        portfolios = (await self.GetPortfolios(tempKey))['portfolios']
+        return {'status': True, 'market_sum': CalculateMarketPortfolio(portfolios), 'nominal_sum': CalculateNominalPortfolio(portfolios)}
     
     async def GetAllBonds(self):
         allBonds = await self.db.bonds.find().to_list(length=5000)

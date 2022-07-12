@@ -39,7 +39,7 @@ const { stop } = useIntersectionObserver(
     <div ref="targetEl" class="p-2 hover:bg-neutral-200 border-2 border-neutral-400 mr-4 text-base"
         @click="{ displayOptions = !displayOptions; }">
         <div v-if="shouldRender" class="flex flex-row">
-            <div class="flex flex-col overflow-hidden">
+            <div class="flex flex-col grow overflow-hidden">
                 <p>{{ bond.name }}</p>
                 <p class="mt-auto select-text hover:italic hover:font-bold" @click.stop="copyText(bond.ticker)">{{
                         bond.ticker
@@ -66,7 +66,7 @@ const { stop } = useIntersectionObserver(
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col border-l-2 border-neutral-500 pl-2 ml-auto overflow-hidden">
+            <div class="flex flex-col border-l-2 border-neutral-500 pl-2 overflow-hidden">
                 <div class="flex flex-row gap-4">
                     <p>текущая доходность</p>
                     <p class="ml-auto">{{ (bond.coupon_profitability * 100).toFixed(1) + '%' }}</p>

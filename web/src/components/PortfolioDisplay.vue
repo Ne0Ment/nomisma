@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted, computed, toRef, watch } from 'vue';
-import Cookies from 'js-cookie';
 
 const emit = defineEmits(['UpdateBonds']);
 

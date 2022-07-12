@@ -91,6 +91,15 @@ function SetSort(n) {
         case 4:
             sorterFn.value = ((bond) => Number(bond.profitability));
             break;
+        case 5:
+            sorterFn.value = ((bond) => bond.ticker);
+            break;
+        case 6:
+            sorterFn.value = ((bond) => bond.name);
+            break;
+        case 7:
+            sorterFn.value = ((bond) => bond.maturity_date);
+            break;
     }
     CalcBonds();
 }
@@ -98,15 +107,15 @@ function SetSort(n) {
 </script>
 
 <template>
-    <div class="table-wrp block max-h-full overflow-auto">
+    <div class="table-wrp block max-h-full overflow-auto text-sm">
         <table class="w-full overflow-auto">
             <thead class="bg-white sticky top-0 border-b">
                 <tr>
-                    <th>
-                        <p>тикер</p>
+                    <th @click="SetSort(5)" :class="chosenSort==5 ? 'active-sort' : ''">
+                        <p class="min-w-max">тикер</p>
                     </th>
-                    <th>
-                        <p>наименование</p>
+                    <th @click="SetSort(6)" :class="chosenSort==6 ? 'active-sort' : ''">
+                        <p class="min-w-max">наименование</p>
                     </th>
                     <th @click="SetSort(0)" :class="chosenSort==0 ? 'active-sort' : ''">
                         <p class="min-w-max">кол-во</p>
@@ -122,6 +131,9 @@ function SetSort(n) {
                     </th>
                     <th @click="SetSort(4)" :class="chosenSort==4 ? 'active-sort' : ''">
                         <p class="min-w-max">дох. к погаш.</p>
+                    </th>
+                    <th @click="SetSort(7)" :class="chosenSort==7 ? 'active-sort' : ''">
+                        <p class="min-w-max">дата погаш.</p>
                     </th>
                 </tr>
             </thead>
@@ -148,6 +160,9 @@ function SetSort(n) {
                     <td>
                         <p>{{ (bond.profitability * 100).toFixed(1) + '%' }}</p>
                     </td>
+                    <td>
+                        <p>{{ [bond.maturity_date.getUTCDate(), bond.maturity_date.getUTCMonth() + 1, bond.maturity_date.getUTCFullYear()].join('.') }}</p>
+                    </td>
                 </tr>
             </tbody>
             <tfoot class="bg-white sticky bottom-0 border-b">
@@ -165,6 +180,7 @@ function SetSort(n) {
                     <td class="bg-neutral-200">
                         {{ (bonds.map(t => t.profitability*(t.market_price*t.count)*100).reduce((a,b) => (a+b), 0)/bondsSum).toFixed(1) }}%
                     </td>
+                    <td></td>
                 </tr>
             </tfoot>
         </table>

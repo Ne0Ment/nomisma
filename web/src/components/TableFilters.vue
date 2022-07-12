@@ -7,7 +7,7 @@ const props = defineProps({
 
 const emit = defineEmits(['EmitFilters']);
 
-const allBonds = toRef(props, 'allBonds');
+const allBonds = ref(props.allBonds);
 
 const allowList = [
     'sector',

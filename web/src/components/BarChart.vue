@@ -32,6 +32,11 @@ function ClearChoice() {
   barSettings.barBorders = Array(12).fill(barSettings.baseBorder);
 }
 
+function ScrollEmit(monthClicked) {
+  emit('DisplayMonth', monthClicked);
+  containerElem.value.scrollIntoView({ behavior: 'smooth' });
+}
+
 const chartOptions = reactive({
   responsive: true,
   maintainAspectRatio: true,
@@ -46,15 +51,14 @@ const chartOptions = reactive({
     let found = chartElem.value.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)[0];
     if (found) {
       let monthClicked = found.index;
-      emit('DisplayMonth', monthClicked);
-      containerElem.value.scrollIntoView({ behavior: 'smooth' });
+      ScrollEmit(monthClicked);
     }
   }
 });
 
 const chartData = computed(() => {
   let borders = Array(12).fill("#FFFFFF");
-  if ((props.highlightMonth) && (props.chosenBar!=-1)) {
+  if ((props.highlightMonth) && (props.chosenBar != -1)) {
     borders[props.chosenBar] = "#525252";
   }
   return {
@@ -67,10 +71,35 @@ const chartData = computed(() => {
     }]
   }
 });
+
+const monthButtons = ref([
+  { id: 0, name: 'Январь' },
+  { id: 1, name: 'Февраль' },
+  { id: 2, name: 'Март' },
+  { id: 3, name: 'Апрель' },
+  { id: 4, name: 'Май' },
+  { id: 5, name: 'Июнь' },
+  { id: 6, name: 'Июль' },
+  { id: 7, name: 'Август' },
+  { id: 8, name: 'Сентябрь' },
+  { id: 9, name: 'Октябрь' },
+  { id: 10, name: 'Ноябрь' },
+  { id: 11, name: 'Декабрь' }
+]);
+
 </script>
 
 <template>
-  <div ref="containerElem">
+  <div ref="containerElem" class="flex flex-col">
     <Bar :chart-options="chartOptions" :chart-data="chartData" ref="chartElem" />
+    <div class="flex flex-row w-full">
+      <div class="invisible">
+        <p>{{ "....." }}</p>
+      </div>
+      <div v-for="b of monthButtons" class="grow z-10 -translate-y-5" @click="ScrollEmit(b.id)">
+        <button class="text-sm"></button>
+      </div>
+    </div>
+
   </div>
 </template>

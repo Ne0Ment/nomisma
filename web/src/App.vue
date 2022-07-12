@@ -5,6 +5,7 @@ import Account from './components/Account.vue';
 import Analysis from './components/Analysis.vue';
 import Cookies from 'js-cookie';
 import Search from './components/Search.vue';
+import Constructor from './components/Constructor.vue';
 
 if (Cookies.get('temp-key') == undefined) {
   Cookies.set('temp-key', '');
@@ -23,10 +24,10 @@ const sums = reactive({
 })
 
 const portfolios = ref([]);
+const bonds = ref([]);
 const chosenTab = ref(0);
 const fetched = ref(false);
 const fetchedBonds = ref(false);
-const bonds = ref([]);
 const serverUrl = "http://127.0.0.1:5000";
 
 if (Cookies.get('main-tab')) {
@@ -157,6 +158,9 @@ onMounted(() => {
     </KeepAlive>
     <KeepAlive v-if="fetchedBonds">
       <Search v-if="(chosenTab === 3)" :bonds="bonds"/>
+    </KeepAlive>
+    <KeepAlive v-if="(fetchedBonds && fetched)">
+      <Constructor v-if="(chosenTab === 2) && (fetchedBonds) && (fetched)" :all-bonds="bonds" :portfolios="portfolios"/>
     </KeepAlive>
   </div>
 </template>
