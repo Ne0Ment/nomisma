@@ -6,7 +6,7 @@ import FlashMessage from './FlashMessage.vue';
 
 const emit = defineEmits(['UpdateToken']);
 
-const serverUrl = "http://127.0.0.1:5000";
+const serverUrl = "";
 
 const newToken = ref('');
 const confCode = ref('');
