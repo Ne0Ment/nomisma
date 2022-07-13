@@ -34,7 +34,7 @@ const bonds = ref([]);
 const chosenTab = ref(0);
 const fetched = ref(false);
 const fetchedBonds = ref(false);
-const serverUrl = "";
+const serverUrl = "http://127.0.0.1:5000";
 
 if (Cookies.get('main-tab')) {
   chosenTab.value = parseInt(Cookies.get('main-tab'));
@@ -111,7 +111,10 @@ function FetchBonds() {
         bonds.value = t.bonds;
         for (let i = 0; i < bonds.value.length; i++) {
           bonds.value[i].maturity_date = new Date(Date.parse(bonds.value[i].maturity_date));
-          bonds.value[i].maturityYear = new Date(Date.parse(bonds.value[i].maturityYear)).getUTCFullYear();
+          bonds.value[i].maturityYear = Math.max(2023, Math.min(2052, new Date(Date.parse(bonds.value[i].maturity_date)).getUTCFullYear()));
+          if (bonds.value[i].sector=='') {
+            bonds.value[i].sector = 'government'
+          }
           if (bonds.value[i].coupons) {
             for (let j = 0; j < bonds.value[i].coupons.length; j++) {
               bonds.value[i].coupons[j].coupon_date = new Date(Date.parse(bonds.value[i].coupons[j].coupon_date));

@@ -45,8 +45,8 @@ const chartOptions = computed(() => {
                 mode: 'index'
             }
         },
-        maintainAspectRatio: false,
-        aspectRatio: 2,
+        maintainAspectRatio: true,
+        aspectRatio: 2.8,
         onClick: (e) => {
             let found = chartElem.value.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)[0];
             if (found) {
@@ -59,7 +59,7 @@ const chartOptions = computed(() => {
 </script>
 
 <template>
-    <div class="mx-auto w-full flex flex-col content-center mt-0 pt-0">
+    <div class="mx-auto w-full flex flex-col content-center mt-0 pt-0 max-h-full">
         <Pie :chart-data="chartData" :chart-options="chartOptions" ref="chartElem" class="mt-0 pt-0" />
     </div>
 </template>

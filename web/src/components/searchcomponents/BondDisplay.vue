@@ -1,6 +1,5 @@
 <script setup>
 import { ref, computed } from 'vue';
-import { copyText } from 'vue3-clipboard'
 import { useIntersectionObserver } from '@vueuse/core'
 const props = defineProps({
     bond: Object
@@ -19,7 +18,7 @@ const sectormap = {
     'energy': 'энергетика',
     'telecom': 'телеком',
     'materials': 'материалы',
-    'utilities': 'utilities',
+    'utilities': 'жкх',
     'health_care': 'здравоохранение',
     'it': 'ит',
     'other': 'другие'
@@ -41,7 +40,7 @@ const { stop } = useIntersectionObserver(
         <div v-if="shouldRender" class="flex flex-row">
             <div class="flex flex-col grow overflow-hidden">
                 <p>{{ bond.name }}</p>
-                <p class="mt-auto select-text hover:italic hover:font-bold" @click.stop="copyText(bond.ticker)">{{
+                <p class="mt-auto select-text">{{
                         bond.ticker
                 }}</p>
                 <div class="options-div flex flex-col w-full overflow-hidden"

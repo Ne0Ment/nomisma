@@ -15,7 +15,6 @@ const allowList = [
     'floating_coupon_flag',
     'maturityYear',
     'coupon_quantity_per_year',
-
 ];
 
 const sectorMap = {
@@ -25,6 +24,7 @@ const sectorMap = {
     real_estate: 'недвижимость',
     industrials: 'индустриальный',
     it: 'ит',
+    utilities: 'жкх',
     telecom: 'телеком',
     materials: 'материалы',
     energy: 'энергетика',
@@ -61,6 +61,7 @@ function CalcFilters() {
             }
         }
     }
+    console.log(a);
     filters.value = a;
 }
 

@@ -20,8 +20,8 @@ const settings = ref({
         { id: 1, chosen: false, name: 'текущая доходность' }
     ],
     sortingDirection: true, // true - downwards, false - upwards
-    maturityStartDate: AddYears(new Date(), 1),
-    maturityEndDate: AddYears(new Date(), 4),
+    maturityStartDate: AddYears(new Date(), 0),
+    maturityEndDate: AddYears(new Date(), 10),
     couponMonths: [
         { 'name': 'янв', active: true, id: 0 },
         { 'name': 'фев', active: true, id: 1 },
@@ -49,7 +49,7 @@ const settings = ref({
         { id: 6, active: true, name: 'энергетика', tname: 'energy' },
         { id: 7, active: true, name: 'телеком', tname: 'telecom' },
         { id: 8, active: true, name: 'материалы', tname: 'materials' },
-        { id: 9, active: true, name: 'utilities', tname: 'utilities' },
+        { id: 9, active: true, name: 'жкх', tname: 'utilities' },
         { id: 10, active: true, name: 'здравоохранение', tname: 'health_care' },
         { id: 11, active: true, name: 'ит', tname: 'it' },
         { id: 12, active: true, name: 'другие', tname: 'other' }]

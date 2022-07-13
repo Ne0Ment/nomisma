@@ -49,15 +49,6 @@ function FilterBonds() {
     });
 }
 
-function AddPortfolioBonds(figis) {
-    allBonds.value = allBonds.value.map(b => {
-        let bond = { ...b };
-        if (figis.includes(bond.figi)) {
-            bond.count += 1;
-        }
-    })
-}
-
 function CalcActions(bond = undefined) {
     let data = {};
     let couponDate, year, month, couponVal;
@@ -117,6 +108,18 @@ function CalcActions(bond = undefined) {
     }
 }
 
+function AddPortfolioBonds(figis) {
+    console.log(figis);
+    allBonds.value = allBonds.value.map(b => {
+        let bond = { ...b };
+        if (figis.includes(bond.figi)) {
+            bond.count += 1;
+        }
+        return bond;
+    });
+    CalcActions();
+}
+
 const tab = ref(0);
 
 function UpdateFilters(v) {
@@ -152,7 +155,7 @@ function SetCount(d) {
         <div class="flex flex-row h-full mt-2 overflow-hidden gap-2 w-full">
             <ConstGraphs v-if="(tab == 0)" :display-data="actions" @set-count="SetCount" />
             <div class="flex flex-col gap-4">
-                <ConstructorPortfolios v-if="portfolios != []" :portfolios="portfolios" />
+                <ConstructorPortfolios v-if="portfolios != []" :portfolios="portfolios" @add-portfolio="AddPortfolioBonds"/>
                 <TableFilters :all-bonds="allBonds" @emit-filters="UpdateFilters" />
             </div>
         </div>
