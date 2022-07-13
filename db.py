@@ -4,9 +4,14 @@ import secrets
 import bcrypt
 from tinkof import FetchPortfolios
 from utility import Random128Hex, CalculateNominalPortfolio, CalculateMarketPortfolio
+import os
 
 class DBHandler():
-    def __init__(self, connString="mongodb://localhost:27017", dbName="nomisma-db"):
+    def __init__(self, connString=None, dbName=None):
+        if (connString==None):
+            connString = os.getenv('MONGODB_CONNSTRING')
+        if (dbName==None):
+            dbName = os.getenv('MONGODB_DATABASE')
         self.db = motor.motor_asyncio.AsyncIOMotorClient(connString, serverSelectionTimeoutMS=5000)[dbName]
 
     def WrongTempCode(self):

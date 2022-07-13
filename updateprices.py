@@ -3,9 +3,13 @@ from datetime import datetime, timedelta
 from db import DBHandler
 from tinkof import FetchPrices, quotation2float
 import asyncio
+import os
 
-client = pymongo.MongoClient("localhost", 27017)
-db2 = client['nomisma-db']
+connString = os.getenv('MONGODB_CONNSTRING')
+dbName = os.getenv('MONGODB_DATABASE')
+
+client = pymongo.MongoClient(connString)
+db2 = client[dbName]
 
 
 def CalcProfit(bond):

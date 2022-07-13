@@ -1,14 +1,14 @@
 [
 	{
-		"comment": "write /tmp/aboba every 2 minutes",
-		"schedule": "@every 1m",
-		"command": "echo aboba > /tmp/aboba",
+		"comment": "update portfolios",
+		"schedule": "@every 10m",
+		"command": "python updateportfolios.py",
 		"container": "obligiru"
 	},
 	{
-		"comment": "write /tmp/kek every 2 minutes",
-		"schedule": "@every 2m",
-		"command": "echo kek > /tmp/kek",
+		"comment": "update prices",
+		"schedule": "@every 5m",
+		"command": "python updateprices.py",
 		"container": "obligiru"
 	}
 ]

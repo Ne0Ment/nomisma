@@ -1,9 +1,13 @@
 import pymongo
 from tinkof import FetchPortfolios
 import asyncio
+import os
 
-client = pymongo.MongoClient("localhost", 27017)
-db = client['nomisma-db']
+connString = os.getenv('MONGODB_CONNSTRING')
+dbName = os.getenv('MONGODB_DATABASE')
+
+client = pymongo.MongoClient(connString)
+db = client[dbName]
 allUsers = [i for i in db.users.find()]
 
 

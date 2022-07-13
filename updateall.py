@@ -4,6 +4,7 @@ import tinkoff.invest.schemas
 from datetime import datetime, timedelta
 import pytz
 import time
+import os
 
 
 def quotation2float(quot):
@@ -17,8 +18,11 @@ def Profitability(bond):
     coupons = sum([i['pay_one_bond'] for i in bond.coupons]) + (bond.nominal-bond.market_price)
     return coupons/bond.market_price/(bond.maturity_date-pytz.UTC.localize(datetime.now())).days*365
 
-client = pymongo.MongoClient("localhost", 27017)
-db = client['nomisma-db']
+connString = os.getenv('MONGODB_CONNSTRING')
+dbName = os.getenv('MONGODB_DATABASE')
+
+client = pymongo.MongoClient(connString)
+db = client[dbName]
 tinkoffToken = 't.CbJu2z3-n0MfU9Dbtbk9kxlGvnml00A7upkA6WvXDjQcpwmtqQyyJ4z00oS17cMfVFO_twNOZ5OcdHvMLyHbwg'
 
 with Client(tinkoffToken) as tinkoff:
