@@ -71,8 +71,8 @@ async def GetAllBonds():
 
 teleToken = '5437510552:AAF8_OLh1OmGgibhzn1w2Bc4BCDOd1pFaM4'
 telegramSecret = HashToken(teleToken.encode('utf-8'))
-#db = DBHandler(connString='mongodb://localhost:27017/', dbName='nomisma-db')
-db = DBHandler()
+db = DBHandler(connString='mongodb://localhost:27017/', dbName='nomisma-db')
+#db = DBHandler()
 teleHandler = Telegramhandler(teleToken)
 #app.run(host='0.0.0.0', port=80)
 #app.run(debug=True)

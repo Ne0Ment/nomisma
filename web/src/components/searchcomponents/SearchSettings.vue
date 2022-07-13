@@ -20,7 +20,7 @@ const settings = ref({
         { id: 1, chosen: false, name: 'текущая доходность' }
     ],
     sortingDirection: true, // true - downwards, false - upwards
-    maturityStartDate: AddYears(new Date(), 0),
+    maturityStartDate: AddYears(new Date(), 1),
     maturityEndDate: AddYears(new Date(), 10),
     couponMonths: [
         { 'name': 'янв', active: true, id: 0 },

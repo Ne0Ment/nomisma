@@ -61,7 +61,6 @@ function CalcFilters() {
             }
         }
     }
-    console.log(a);
     filters.value = a;
 }
 

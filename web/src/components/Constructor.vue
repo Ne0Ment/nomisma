@@ -109,7 +109,6 @@ function CalcActions(bond = undefined) {
 }
 
 function AddPortfolioBonds(figis) {
-    console.log(figis);
     allBonds.value = allBonds.value.map(b => {
         let bond = { ...b };
         if (figis.includes(bond.figi)) {

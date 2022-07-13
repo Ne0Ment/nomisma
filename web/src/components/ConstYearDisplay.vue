@@ -106,4 +106,7 @@ function SetCount(index, count) {
 .collapsableDiv {
     transition: max-height 0.3s;
 }
+.shadow-div {
+    background-color: rgba(0,0,0,0.5);
+}
 </style>

@@ -34,7 +34,7 @@ const bonds = ref([]);
 const chosenTab = ref(0);
 const fetched = ref(false);
 const fetchedBonds = ref(false);
-const serverUrl = "";
+const serverUrl = "http://127.0.0.1:5000";
 
 if (Cookies.get('main-tab')) {
   chosenTab.value = parseInt(Cookies.get('main-tab'));

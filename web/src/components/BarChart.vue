@@ -37,21 +37,36 @@ function ScrollEmit(monthClicked) {
   containerElem.value.scrollIntoView({ behavior: 'smooth' });
 }
 
-const chartOptions = reactive({
-  responsive: true,
-  maintainAspectRatio: true,
-  aspectRatio: 3,
-  animation: false,
-  plugins: {
-    legend: {
-      display: false
-    }
-  },
-  onClick: (e) => {
-    let found = chartElem.value.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)[0];
-    if (found) {
-      let monthClicked = found.index;
-      ScrollEmit(monthClicked);
+const chartOptions = computed(() => {
+  let weights = Array(12).fill("normal");
+  if ((props.highlightMonth) && (props.chosenBar != -1)) {
+    weights[props.chosenBar] = "bold";
+  }
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    aspectRatio: 3,
+    animation: false,
+    plugins: {
+      legend: {
+        display: false
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          font: {
+            weight: weights
+          }
+        }
+      }
+    },
+    onClick: (e) => {
+      let found = chartElem.value.chart.getElementsAtEventForMode(e, 'nearest', { intersect: true }, true)[0];
+      if (found) {
+        let monthClicked = found.index;
+        ScrollEmit(monthClicked);
+      }
     }
   }
 });
