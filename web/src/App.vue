@@ -6,6 +6,7 @@ import Analysis from './components/Analysis.vue';
 import Cookies from 'js-cookie';
 import Search from './components/Search.vue';
 import Constructor from './components/Constructor.vue';
+import MobileHead from './components/MobileHead.vue';
 
 if (Cookies.get('temp-key') == undefined) {
   Cookies.set('temp-key', '');
@@ -17,6 +18,11 @@ const tabs = ref([
   { id: 2, name: 'конструктор', active: false },
   { id: 3, name: 'поиск', active: false }
 ]);
+
+const mobileTabs = ref([
+  { id: 0, name: 'аккаунт', active: true },
+  { id: 1, name: 'портфель', active: false }
+])
 
 const sums = reactive({
   nominalValue: '0',
@@ -37,7 +43,7 @@ if (Cookies.get('main-tab')) {
 function FetchSums() {
   let tempKey = Cookies.get('temp-key')
   let payload = {
-    method: "POST", 
+    method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ temp_key: tempKey })
   }
@@ -138,15 +144,20 @@ function ToggleLogin(newState) {
   FetchBonds();
 }
 
+function IsMobile() {
+  return (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+}
+
 onMounted(() => {
   FetchSums();
   FetchPortfolios();
   FetchBonds();
+  console.log(IsMobile());
 });
 </script>
 
 <template>
-  <div class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto">
+  <div v-if="!IsMobile()" class="flex flex-col p-5 font-mono h-full max-w-screen-xl self-center m-auto">
     <KeepAlive>
       <Head :tabs="tabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
     </KeepAlive>
@@ -157,10 +168,19 @@ onMounted(() => {
       <Analysis v-if="(chosenTab === 1)" :portfolios="portfolios" />
     </KeepAlive>
     <KeepAlive v-if="fetchedBonds">
-      <Search v-if="(chosenTab === 3)" :bonds="bonds"/>
+      <Search v-if="(chosenTab === 3)" :bonds="bonds" />
     </KeepAlive>
     <KeepAlive v-if="(fetchedBonds && fetched)">
-      <Constructor v-if="(chosenTab === 2) && (fetchedBonds) && (fetched)" :all-bonds="bonds" :portfolios="portfolios"/>
+      <Constructor v-if="(chosenTab === 2) && (fetchedBonds) && (fetched)" :all-bonds="bonds"
+        :portfolios="portfolios" />
+    </KeepAlive>
+  </div>
+  <div v-else class="flex flex-col p-2 font-mono h-full">
+    <KeepAlive>
+      <MobileHead :tabs="mobileTabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
+    </KeepAlive>
+    <KeepAlive>
+      <Account v-if="chosenTab === 0" @ToggleLogin="ToggleLogin" />
     </KeepAlive>
   </div>
 </template>

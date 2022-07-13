@@ -13,7 +13,7 @@ const showOptions = ref(false);
 </script>
 
 <template>
-    <div class="flex flex-col border-neutral-200 border-2">
+    <div class="flex flex-col border-neutral-200 border-2 min-w-max">
         <button @click="() => {showOptions = !showOptions}" class="hover:bg-neutral-200">
             <p class="m-1 text-base"> добавить из портфеля </p>
         </button>

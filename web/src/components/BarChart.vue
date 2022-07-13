@@ -90,7 +90,7 @@ const monthButtons = ref([
 </script>
 
 <template>
-  <div ref="containerElem" class="flex flex-col">
+  <div ref="containerElem" class="flex flex-col overflow-auto">
     <Bar :chart-options="chartOptions" :chart-data="chartData" ref="chartElem" />
     <div class="flex flex-row w-full">
       <div class="invisible">
@@ -103,3 +103,9 @@ const monthButtons = ref([
 
   </div>
 </template>
+
+<style>
+canvas {
+  width: 100% !important;
+}
+</style>

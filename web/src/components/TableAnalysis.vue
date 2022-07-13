@@ -1,6 +1,5 @@
 <script setup>
 import { computed, onMounted, ref, toRef, watch } from 'vue';
-import BondDisplay from './searchcomponents/BondDisplay.vue';
 import { sort } from 'fast-sort';
 
 

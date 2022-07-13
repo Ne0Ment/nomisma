@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  obligiru:
+    build: .
+    container_name: obligiru
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:48086:80"
+    env_file: .env
+    networks:
+      default:
+        aliases:
+          - obligiru
+  scripts:
+    image: willfarrell/crontab
+    restart: unless-stopped
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - "$PWD/cron-config.json:/opt/crontab/config.json:rw"
+networks:
+  default:
+    name: services
+    external: true

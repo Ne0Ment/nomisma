@@ -1,0 +1,14 @@
+[
+	{
+		"comment": "write /tmp/aboba every 2 minutes",
+		"schedule": "@every 1m",
+		"command": "echo aboba > /tmp/aboba",
+		"container": "obligiru"
+	},
+	{
+		"comment": "write /tmp/kek every 2 minutes",
+		"schedule": "@every 2m",
+		"command": "echo kek > /tmp/kek",
+		"container": "obligiru"
+	}
+]
