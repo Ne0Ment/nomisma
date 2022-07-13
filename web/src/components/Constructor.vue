@@ -19,6 +19,7 @@ const allBonds = ref(props.allBonds.map(b => {
 }));
 const actions = ref();
 const filters = ref([]);
+const k = ref(0);
 
 const tickerMap = computed(() => {
     let t = {};
@@ -40,7 +41,7 @@ function FilterBonds() {
                 }
             }
         }
-        if (ok || (bond.count!=0)) {
+        if (ok || (bond.count != 0)) {
             bond.display = true;
         } else {
             bond.display = false;
@@ -49,74 +50,92 @@ function FilterBonds() {
     });
 }
 
-function CalcActions(bond = undefined) {
+function CalcActions() {
     let data = {};
     let couponDate, year, month, couponVal;
     let taxCheckDate = new Date(); taxCheckDate.setFullYear(taxCheckDate.getFullYear() + 3);
-    if (bond) {
-    } else {
-        for (const bond of allBonds.value) {
-            if (bond.coupons) {
-                for (let coupon of bond.coupons) {
-                    couponDate = coupon.coupon_date
-                    year = couponDate.getUTCFullYear();
-                    month = couponDate.getUTCMonth();
-                    if (data[year] == undefined) {
-                        data[year] = {};
-                        data[year].monthSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                        data[year].monthCoupons = Array.from(Array(12), () => []);
-                    }
-                    couponVal = coupon.pay_one_bond * bond.count;
-                    data[year].monthSum[month] += couponVal;
-                    coupon.ticker = bond.ticker;
-                    coupon.name = bond.name;
-                    coupon.all_pay = couponVal;
-                    data[year].monthCoupons[month].push({
-                        ticker: bond.ticker,
-                        name: bond.name,
-                        all_pay: couponVal,
-                        one_pay: coupon.pay_one_bond,
-                        type: 'купон',
-                        date: couponDate,
-                        display: bond.display,
-                        portfolioName: bond.portfolioName,
-                        profitability: bond.profitability,
-                        coupon_profitability: bond.coupon_profitability,
-                        count: bond.count
-                    });
+    for (const bond of allBonds.value) {
+        if (bond.coupons) {
+            for (let coupon of bond.coupons) {
+                couponDate = coupon.coupon_date
+                year = couponDate.getUTCFullYear();
+                month = couponDate.getUTCMonth();
+                if (data[year] == undefined) {
+                    data[year] = {};
+                    data[year].monthSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+                    data[year].monthCoupons = Array.from(Array(12), () => []);
                 }
+                couponVal = coupon.pay_one_bond * bond.count;
+                data[year].monthSum[month] += couponVal;
+                coupon.ticker = bond.ticker;
+                coupon.name = bond.name;
+                coupon.all_pay = couponVal;
+                data[year].monthCoupons[month].push({
+                    ticker: bond.ticker,
+                    name: bond.name,
+                    all_pay: couponVal,
+                    one_pay: coupon.pay_one_bond,
+                    type: 'купон',
+                    date: couponDate,
+                    display: bond.display,
+                    portfolioName: bond.portfolioName,
+                    profitability: bond.profitability,
+                    coupon_profitability: bond.coupon_profitability,
+                    count: bond.count
+                });
             }
+        }
 
+    }
+    for (const year of Object.keys(data)) {
+        for (let month = 0; month < 12; month++) {
+            data[year].monthCoupons[month] = sort(data[year].monthCoupons[month]).desc([
+                bond => bond.count != 0 ? 1 : 0,
+                bond => bond.date.getTime()
+            ])
         }
-        for (const year of Object.keys(data)) {
-            for (let month = 0; month < 12; month++) {
-                data[year].monthCoupons[month] = sort(data[year].monthCoupons[month]).desc([
-                    bond => bond.count,
-                    bond => bond.date.getTime()
-                ])
-            }
-        }
-        if (Object.keys(data).length != 0) {
-            actions.value = data;
-        } else {
-            let currentYear = (new Date()).getUTCFullYear();
-            data = {};
-            data[currentYear] = {};
-            data[currentYear].monthSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-            actions.value = data;
-        }
+    }
+    if (Object.keys(data).length != 0) {
+        actions.value = data;
+    } else {
+        let currentYear = (new Date()).getUTCFullYear();
+        data = {};
+        data[currentYear] = {};
+        data[currentYear].monthSum = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        actions.value = data;
     }
 }
 
-function AddPortfolioBonds(figis) {
-    allBonds.value = allBonds.value.map(b => {
-        let bond = { ...b };
-        if (figis.includes(bond.figi)) {
-            bond.count += 1;
+function UpdateActions(ticker, count) {
+    count = Math.max(0, count);
+    const index = tickerMap.value[ticker];
+    allBonds.value[index].count = count;
+    var couponDate, year, month;
+    let data = { ...actions.value };
+    for (let coupon of allBonds.value[index].coupons) {
+        couponDate = coupon.coupon_date
+        year = couponDate.getUTCFullYear();
+        month = couponDate.getUTCMonth();
+        const couponIndex = data[year].monthCoupons[month].findIndex(action => action.ticker == ticker);
+        data[year].monthCoupons[month][couponIndex].count = count;
+        data[year].monthSum[month] = data[year].monthCoupons[month].map(action => action.one_pay * action.count).reduce((a, b) => a + b, 0);
+    }
+    for (const year of Object.keys(data)) {
+        for (let month = 0; month < 12; month++) {
+            data[year].monthCoupons[month] = sort(data[year].monthCoupons[month]).desc([
+                bond => bond.count != 0 ? 1 : 0,
+                bond => bond.date.getTime()
+            ])
         }
-        return bond;
-    });
-    CalcActions();
+    }
+    actions.value = data;
+    k.value = k.value + 1;
+}
+
+function AddPortfolioBonds(bonds) {
+    for (const bond of bonds) {
+        UpdateActions(bond.ticker, bond.count);
+    }
 }
 
 const tab = ref(0);
@@ -130,7 +149,7 @@ function UpdateFilters(v) {
 function SetCount(d) {
     const index = tickerMap.value[d.bond];
     allBonds.value[index].count = d.count;
-    CalcActions();
+    UpdateActions(d.bond, d.count)
 }
 
 </script>
@@ -154,7 +173,8 @@ function SetCount(d) {
         <div class="flex flex-row h-full mt-2 overflow-hidden gap-2 w-full">
             <ConstGraphs v-if="(tab == 0)" :display-data="actions" @set-count="SetCount" />
             <div class="flex flex-col gap-4">
-                <ConstructorPortfolios v-if="portfolios != []" :portfolios="portfolios" @add-portfolio="AddPortfolioBonds"/>
+                <ConstructorPortfolios v-if="portfolios != []" :portfolios="portfolios"
+                    @add-portfolio="AddPortfolioBonds" />
                 <TableFilters :all-bonds="allBonds" @emit-filters="UpdateFilters" />
             </div>
         </div>

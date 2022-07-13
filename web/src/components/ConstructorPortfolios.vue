@@ -14,7 +14,7 @@ const portfolios = toRef(props, 'portfolios');
 const showOptions = ref(false);
 
 function AddPortfolio(portfolio){
-    emit('add-portfolio', portfolio.bonds.map(bond => bond.figi));
+    emit('add-portfolio', portfolio.bonds);
 }
 </script>
 
