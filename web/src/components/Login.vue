@@ -5,7 +5,7 @@ import TelegramLogin from './TelegramLogin.vue'
 
 const emit = defineEmits(['ChangeLoginState']);
 
-const serverUrl = "http://127.0.0.1:5000";
+const serverUrl = "";
 
 function HandleLogin(user) {
     let payload = {
