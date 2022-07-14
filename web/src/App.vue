@@ -191,7 +191,7 @@ onMounted(() => {
     <KeepAlive>
       <MobileAnalysis v-if="chosenTab === 1" :portfolios="portfolios" />
     </KeepAlive>
-    <MobileLoadingDisplay v-if="!fetched || !fetchedBonds" />
+    <MobileLoadingDisplay v-if="!fetched" />
   </div>
 </template>
 
