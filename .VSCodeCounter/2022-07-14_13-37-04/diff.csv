@@ -1,0 +1,7 @@
+"filename", "language", "vue", "comment", "blank", "total"
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/App.vue", "vue", -1, 0, 0, -1
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileAnalysis.vue", "vue", 5, 0, 0, 5
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileBarChart.vue", "vue", 112, 0, 14, 126
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileGraphDisplay.vue", "vue", 16, 0, 3, 19
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileYearDisplay.vue", "vue", 81, 5, 9, 95
+"Total", "-", 213, 5, 26, 244

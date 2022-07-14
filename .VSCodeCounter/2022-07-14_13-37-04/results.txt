@@ -1,0 +1,104 @@
+Date : 2022-07-14 13:37:04
+Directory : /Users/foxen/Documents/nomisma/quart_vue
+Total : 64 files,  12895 codes, 204 comments, 422 blanks, all 13521 lines
+
+Languages
++------------------+------------+------------+------------+------------+------------+
+| language         | files      | code       | comment    | blank      | total      |
++------------------+------------+------------+------------+------------+------------+
+| JSON             |          3 |      9,714 |          0 |          2 |      9,716 |
+| vue              |         37 |      2,599 |         61 |        306 |      2,966 |
+| Python           |          9 |        397 |         63 |         74 |        534 |
+| pip requirements |          1 |         50 |          0 |          1 |         51 |
+| JavaScript       |          5 |         45 |         80 |         10 |        135 |
+| HTML             |          2 |         27 |          0 |          3 |         30 |
+| Markdown         |          2 |         24 |          0 |         15 |         39 |
+| YAML             |          1 |         23 |          0 |          2 |         25 |
+| Docker           |          1 |          8 |          0 |          5 |         13 |
+| Makefile         |          1 |          7 |          0 |          2 |          9 |
+| PostCSS          |          2 |          1 |          0 |          2 |          3 |
++------------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                            | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                               |         64 |     12,895 |        204 |        422 |     13,521 |
+| web                                                                                             |         49 |     12,394 |        141 |        337 |     12,872 |
+| web/dist                                                                                        |          3 |         30 |         78 |          4 |        112 |
+| web/dist/assets                                                                                 |          2 |         16 |         78 |          2 |         96 |
+| web/src                                                                                         |         39 |      2,602 |         61 |        311 |      2,974 |
+| web/src/components                                                                              |         36 |      2,405 |         61 |        286 |      2,752 |
+| web/src/components/searchcomponents                                                             |          4 |        341 |         25 |         26 |        392 |
++-------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| filename                                                                                        | language         | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+
+| /Users/foxen/Documents/nomisma/quart_vue/Dockerfile                                             | Docker           |          8 |          0 |          5 |         13 |
+| /Users/foxen/Documents/nomisma/quart_vue/Makefile                                               | Makefile         |          7 |          0 |          2 |          9 |
+| /Users/foxen/Documents/nomisma/quart_vue/README.md                                              | Markdown         |          2 |          0 |          1 |          3 |
+| /Users/foxen/Documents/nomisma/quart_vue/cron-config.json                                       | JSON             |         14 |          0 |          0 |         14 |
+| /Users/foxen/Documents/nomisma/quart_vue/db.py                                                  | Python           |        135 |         60 |         15 |        210 |
+| /Users/foxen/Documents/nomisma/quart_vue/docker-compose.yml                                     | YAML             |         23 |          0 |          2 |         25 |
+| /Users/foxen/Documents/nomisma/quart_vue/requirements.txt                                       | pip requirements |         50 |          0 |          1 |         51 |
+| /Users/foxen/Documents/nomisma/quart_vue/server.py                                              | Python           |         62 |          3 |         13 |         78 |
+| /Users/foxen/Documents/nomisma/quart_vue/tele.py                                                | Python           |          8 |          0 |          1 |          9 |
+| /Users/foxen/Documents/nomisma/quart_vue/test.py                                                | Python           |          7 |          0 |          5 |         12 |
+| /Users/foxen/Documents/nomisma/quart_vue/tinkof.py                                              | Python           |         20 |          0 |          2 |         22 |
+| /Users/foxen/Documents/nomisma/quart_vue/updateall.py                                           | Python           |         64 |          0 |         12 |         76 |
+| /Users/foxen/Documents/nomisma/quart_vue/updateportfolios.py                                    | Python           |         22 |          0 |          5 |         27 |
+| /Users/foxen/Documents/nomisma/quart_vue/updateprices.py                                        | Python           |         49 |          0 |         13 |         62 |
+| /Users/foxen/Documents/nomisma/quart_vue/utility.py                                             | Python           |         30 |          0 |          8 |         38 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/README.md                                          | Markdown         |         22 |          0 |         14 |         36 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/dist/assets/index.7a929b66.css                     | PostCSS          |          1 |          0 |          1 |          2 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/dist/assets/index.ed7f999b.js                      | JavaScript       |         15 |         78 |          1 |         94 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/dist/index.html                                    | HTML             |         14 |          0 |          2 |         16 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/index.html                                         | HTML             |         13 |          0 |          1 |         14 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/package-lock.json                                  | JSON             |      9,657 |          0 |          1 |      9,658 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/package.json                                       | JSON             |         43 |          0 |          1 |         44 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/postcss.config.js                                  | JavaScript       |          6 |          0 |          1 |          7 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/App.vue                                        | vue              |        194 |          0 |         20 |        214 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Account.vue                         | vue              |         19 |          0 |          5 |         24 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Analysis.vue                        | vue              |        210 |          0 |         20 |        230 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/BarChart.vue                        | vue              |        112 |          0 |         14 |        126 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/CalcSettings.vue                    | vue              |         30 |          0 |          5 |         35 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/ConstGraphs.vue                     | vue              |         16 |          0 |          4 |         20 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/ConstYearDisplay.vue                | vue              |        102 |          0 |         10 |        112 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Constructor.vue                     | vue              |        168 |          8 |         16 |        192 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/ConstructorList.vue                 | vue              |          4 |          0 |          2 |          6 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/ConstructorPortfolios.vue           | vue              |         34 |          0 |          6 |         40 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/ControlPanel.vue                    | vue              |         12 |          0 |          2 |         14 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/DataDisplay.vue                     | vue              |         16 |          0 |          3 |         19 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/FlashMessage.vue                    | vue              |         30 |          0 |          4 |         34 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Head.vue                            | vue              |         65 |          0 |         12 |         77 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Login.vue                           | vue              |         34 |          8 |          4 |         46 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Logout.vue                          | vue              |         17 |          0 |          2 |         19 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileAnalysis.vue                  | vue              |        119 |          0 |         11 |        130 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileAnalysisSettings.vue          | vue              |         30 |          0 |          5 |         35 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileBarChart.vue                  | vue              |        112 |          0 |         14 |        126 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileGraphDisplay.vue              | vue              |         16 |          0 |          3 |         19 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileHead.vue                      | vue              |         55 |         15 |         12 |         82 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobilePortfolios.vue                | vue              |         34 |          0 |          8 |         42 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileYearDisplay.vue               | vue              |         81 |          5 |          9 |         95 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/PieAnalysis.vue                     | vue              |         57 |          0 |          8 |         65 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/PieSettings.vue                     | vue              |         34 |          0 |          7 |         41 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/PortfolioDisplay.vue                | vue              |         34 |          0 |          8 |         42 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/Search.vue                          | vue              |         60 |          0 |          6 |         66 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/StatusDisplay.vue                   | vue              |         16 |          0 |          3 |         19 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/TableAnalysis.vue                   | vue              |        186 |          0 |         15 |        201 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/TableFilters.vue                    | vue              |        124 |          0 |         18 |        142 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/TelegramLogin.vue                   | vue              |         64 |          0 |          1 |         65 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/UpdateToken.vue                     | vue              |         87 |          0 |         14 |        101 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/YearDisplay.vue                     | vue              |         86 |          0 |          9 |         95 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/searchcomponents/BondDisplay.vue    | vue              |        106 |          0 |          5 |        111 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/searchcomponents/SearchBar.vue      | vue              |         19 |          0 |          4 |         23 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/searchcomponents/SearchList.vue     | vue              |         11 |          0 |          3 |         14 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/components/searchcomponents/SearchSettings.vue | vue              |        205 |         25 |         14 |        244 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/main.css                                       | PostCSS          |          0 |          0 |          1 |          1 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/src/main.js                                        | JavaScript       |          3 |          0 |          4 |          7 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/tailwind.config.js                                 | JavaScript       |         10 |          1 |          1 |         12 |
+| /Users/foxen/Documents/nomisma/quart_vue/web/vite.config.js                                     | JavaScript       |         11 |          1 |          3 |         15 |
+| Total                                                                                           |                  |     12,895 |        204 |        422 |     13,521 |
++-------------------------------------------------------------------------------------------------+------------------+------------+------------+------------+------------+

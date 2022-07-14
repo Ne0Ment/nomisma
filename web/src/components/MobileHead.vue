@@ -39,7 +39,7 @@ function ChangePortfolioDisplay(newId) {
 </script>
 
 <template>
-    <div class="flex flex-row border-b-4 gap-1">
+    <div class="flex flex-row border-b-4 gap-1 pb-2">
         <p class="text-2xl font-bold m-auto">облиги</p>
         <!-- <div class="flex flex-col m-auto border-2 text-sm self-center my-auto">
             <button class="self-start py-1 px-3 hover:bg-neutral-200"
@@ -73,10 +73,10 @@ function ChangePortfolioDisplay(newId) {
     transition: max-width 0.3s, max-height 0.3s;
 }
 .passivebutton-m {
-  @apply text-base p-2 hover:bg-neutral-600 hover:text-white
+  @apply text-base p-1 hover:bg-neutral-600 hover:text-white
 }
 
 .activebutton-m {
-  @apply text-base p-2 bg-neutral-600 text-white
+  @apply text-base p-1 bg-neutral-600 text-white
 }
 </style>

@@ -2,9 +2,15 @@
 
 import { ref, toRef, computed, onMounted, watch } from 'vue'
 import { sort } from 'fast-sort';
+import MobilePortfolios from './MobilePortfolios.vue';
+import MobileAnalysisSettings from './MobileAnalysisSettings.vue';
+import MobileGraphDisplay from './MobileGraphDisplay.vue';
 
 const props = defineProps({
-    portfolios: Array
+    portfolios: {
+        type: Array,
+        default: []
+    }
 });
 const portfolios = toRef(props, 'portfolios');
 const chosenBonds = ref([]);
@@ -103,10 +109,22 @@ const displayData = computed(() => {
 
 });
 
+function SetNewBonds(newBonds) {
+    chosenBonds.value = newBonds;
+}
+
+function SetNewSettings(newSettings) {
+    calcSettings.value = newSettings;
+}
+
 </script>
 
 <template>
-<div class="flex flex-col">
-
-</div>
+    <div class="flex flex-col overflow-hidden">
+        <div class="flex flex-row">
+            <MobilePortfolios @update-bonds="SetNewBonds" v-if="portfolios.length!=0" :portfolios="portfolios" />
+            <MobileAnalysisSettings v-if="portfolios.length!=0" @update-settings="SetNewSettings"/>
+        </div>
+        <MobileGraphDisplay :display-data="displayData"/>
+    </div>
 </template>

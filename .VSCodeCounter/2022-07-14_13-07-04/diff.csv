@@ -1,0 +1,14 @@
+"filename", "language", "vue", "JavaScript", "PostCSS", "comment", "blank", "total"
+"/Users/foxen/Documents/nomisma/quart_vue/web/dist/assets/index.14d3cd26.js", "JavaScript", 0, -15, 0, -78, -1, -94
+"/Users/foxen/Documents/nomisma/quart_vue/web/dist/assets/index.7a929b66.css", "PostCSS", 0, 0, 1, 0, 1, 2
+"/Users/foxen/Documents/nomisma/quart_vue/web/dist/assets/index.82fea18f.css", "PostCSS", 0, 0, -1, 0, -1, -2
+"/Users/foxen/Documents/nomisma/quart_vue/web/dist/assets/index.ed7f999b.js", "JavaScript", 0, 15, 0, 78, 1, 94
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/App.vue", "vue", 4, 0, 0, 0, 0, 4
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/BarChart.vue", "vue", 15, 0, 0, 0, 0, 15
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/ConstYearDisplay.vue", "vue", 3, 0, 0, 0, 0, 3
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/Constructor.vue", "vue", 18, 0, 0, 0, 1, 19
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileAnalysis.vue", "vue", 12, 0, 0, 0, 1, 13
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobileAnalysisSettings.vue", "vue", 30, 0, 0, 0, 5, 35
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/MobilePortfolios.vue", "vue", 34, 0, 0, 0, 8, 42
+"/Users/foxen/Documents/nomisma/quart_vue/web/src/components/TableFilters.vue", "vue", -1, 0, 0, 0, 0, -1
+"Total", "-", 115, 0, 0, 0, 15, 130

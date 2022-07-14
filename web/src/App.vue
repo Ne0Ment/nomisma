@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import Search from './components/Search.vue';
 import Constructor from './components/Constructor.vue';
 import MobileHead from './components/MobileHead.vue';
+import MobileAnalysis from './components/MobileAnalysis.vue';
 
 if (Cookies.get('temp-key') == undefined) {
   Cookies.set('temp-key', '');
@@ -155,7 +156,6 @@ onMounted(() => {
   FetchSums();
   FetchPortfolios();
   FetchBonds();
-  console.log(IsMobile());
 });
 </script>
 
@@ -183,7 +183,10 @@ onMounted(() => {
       <MobileHead :tabs="mobileTabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
     </KeepAlive>
     <KeepAlive>
-      <Account v-if="chosenTab === 0" @ToggleLogin="ToggleLogin" />
+        <Account v-if="chosenTab === 0" @ToggleLogin="ToggleLogin" />
+    </KeepAlive>
+    <KeepAlive>
+        <MobileAnalysis v-if="chosenTab === 1" :portfolios="portfolios" />
     </KeepAlive>
   </div>
 </template>
