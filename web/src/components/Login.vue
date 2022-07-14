@@ -30,7 +30,7 @@ function HandleLogin(user) {
 <template>
     <div class="self-center w-1/3">
         <div class="flex flex-col h-1/3">
-            <h1 class="self-center text-2xl my-5">вход/регистрация</h1>
+            <h1 class="self-center text-xl my-5">вход/регистрация</h1>
             <TelegramLogin class="self-center bg-neutral-300 p-4 rounded-xl" mode="callback"
                 telegram-login="Nomisma_Login_Bot" @callback="HandleLogin" requestAccess="write" />
             <!--
