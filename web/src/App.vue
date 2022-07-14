@@ -8,6 +8,8 @@ import Search from './components/Search.vue';
 import Constructor from './components/Constructor.vue';
 import MobileHead from './components/MobileHead.vue';
 import MobileAnalysis from './components/MobileAnalysis.vue';
+import MobileLoadingDisplay from './components/MobileLoadingDisplay.vue';
+import LoadingDisplay from './components/LoadingDisplay.vue';
 
 if (Cookies.get('temp-key') == undefined) {
   Cookies.set('temp-key', '');
@@ -113,7 +115,7 @@ function FetchBonds() {
         for (let i = 0; i < bonds.value.length; i++) {
           bonds.value[i].maturity_date = new Date(Date.parse(bonds.value[i].maturity_date));
           bonds.value[i].maturityYear = Math.max(2023, Math.min(2052, new Date(Date.parse(bonds.value[i].maturity_date)).getUTCFullYear()));
-          if (bonds.value[i].sector=='') {
+          if (bonds.value[i].sector == '') {
             bonds.value[i].sector = 'government'
           }
           if (bonds.value[i].coupons) {
@@ -177,17 +179,19 @@ onMounted(() => {
       <Constructor v-if="(chosenTab === 2) && (fetchedBonds) && (fetched)" :all-bonds="bonds"
         :portfolios="portfolios" />
     </KeepAlive>
+    <LoadingDisplay v-if="!fetched || !fetchedBonds" />
   </div>
   <div v-else class="flex flex-col p-2 font-mono h-full">
     <KeepAlive>
       <MobileHead :tabs="mobileTabs" :chosenTab="chosenTab" :sums="sums" @ChangeTab="(t) => UpdateTab(t)" />
     </KeepAlive>
     <KeepAlive>
-        <Account v-if="chosenTab === 0" @ToggleLogin="ToggleLogin" />
+      <Account v-if="chosenTab === 0" @ToggleLogin="ToggleLogin" />
     </KeepAlive>
     <KeepAlive>
-        <MobileAnalysis v-if="chosenTab === 1" :portfolios="portfolios" />
+      <MobileAnalysis v-if="chosenTab === 1" :portfolios="portfolios" />
     </KeepAlive>
+    <MobileLoadingDisplay v-if="!fetched || !fetchedBonds" />
   </div>
 </template>
 

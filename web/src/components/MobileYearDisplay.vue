@@ -39,7 +39,12 @@ function HideDropDown() {
 
 <template>
     <div class="flex flex-col mx-3">
-        <div ref="targetEl" class="flex flex-row w-full z-10">
+        <div ref="targetEl" class="flex flex-col w-full z-10">
+            <div class="flex flex-row text-sm gap-2">
+                <p class="mr-auto">{{ year }}</p>
+                <p>сумма: {{ (data.monthSum.reduce((a, b) => a + b, 0)).toFixed(0) }}</p>
+                <p>среднее: {{ (data.monthSum.reduce((a, b) => a + b, 0) / data.monthSum.length).toFixed(0) }}</p>
+            </div>
             <MobileBarChart v-if="shouldRender" class="grow min-w-0" :displayData="data.monthSum"
                 :chosen-bar="chosenMonth" :highlight-month="displayDropDown" @display-month="UpdateChosen" />
             <!-- <div class="flex flex-col px-3 py-2 whitespace-nowrap border-2">

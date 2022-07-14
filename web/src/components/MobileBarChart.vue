@@ -56,7 +56,8 @@ const chartOptions = computed(() => {
       x: {
         ticks: {
           font: {
-            weight: weights
+            weight: weights,
+            size: 10
           }
         }
       }
@@ -107,15 +108,6 @@ const monthButtons = ref([
 <template>
   <div ref="containerElem" class="flex flex-col overflow-auto">
     <Bar :chart-options="chartOptions" :chart-data="chartData" ref="chartElem" />
-    <div class="flex flex-row w-full">
-      <div class="invisible">
-        <p>{{ "....." }}</p>
-      </div>
-      <div v-for="b of monthButtons" class="grow z-10 -translate-y-5" @click="ScrollEmit(b.id)">
-        <button class="text-sm"></button>
-      </div>
-    </div>
-
   </div>
 </template>
 
