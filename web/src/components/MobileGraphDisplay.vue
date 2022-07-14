@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
     <div class="flex flex-col grow h-full min-w-0">
-        <div class="flex flex-col grow min-w-0 overflow-auto">
+        <div class="flex flex-col grow min-w-0">
             <div v-for="(data, year) in displayData">
                 <MobileYearDisplay :data="data" :year="year"/>
             </div>
