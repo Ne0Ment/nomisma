@@ -120,7 +120,7 @@ function SetNewSettings(newSettings) {
 </script>
 
 <template>
-    <div class="flex flex-col overflow-hidden">
+    <div class="flex flex-col overflow-auto">
         <div class="flex flex-row">
             <MobilePortfolios @update-bonds="SetNewBonds" v-if="portfolios.length!=0" :portfolios="portfolios" />
             <MobileAnalysisSettings v-if="portfolios.length!=0" @update-settings="SetNewSettings"/>
