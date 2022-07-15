@@ -2,6 +2,7 @@ import quart
 from dataclasses import dataclass
 from quart_cors import cors
 from quart_schema import validate_request
+import os
 
 from db import DBHandler
 from tele import Telegramhandler
@@ -69,7 +70,7 @@ async def GetPortfolioSums(data: TempKeyData):
 async def GetAllBonds():
     return quart.jsonify(await db.GetAllBonds())
 
-teleToken = '5437510552:AAF8_OLh1OmGgibhzn1w2Bc4BCDOd1pFaM4'
+teleToken = os.getenv('TELETOKEN')
 telegramSecret = HashToken(teleToken.encode('utf-8'))
 #db = DBHandler(connString='mongodb://localhost:27017/', dbName='nomisma-db')
 db = DBHandler()
