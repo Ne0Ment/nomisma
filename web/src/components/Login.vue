@@ -5,7 +5,7 @@ import TelegramLogin from './TelegramLogin.vue'
 
 const emit = defineEmits(['ChangeLoginState']);
 
-const serverUrl = "http://127.0.0.1:5000";
+const serverUrl = "";
 
 function HandleLogin(user) {
     let payload = {
@@ -32,7 +32,7 @@ function HandleLogin(user) {
         <div class="flex flex-col h-1/3 my-5">
             <!-- <p class="self-center text-2xl my-5">вход/регистрация</p> -->
             <TelegramLogin class="self-center bg-neutral-300 p-4 rounded-xl" mode="callback"
-                telegram-login="Nomisma_Login_Bot" @callback="HandleLogin" requestAccess="write" />
+                telegram-login="obligiru_bot" @callback="HandleLogin" requestAccess="write" />
             <!--
         <div class="bg-neutral-200 flex flex-col border-neutral-200 border-4">
             
