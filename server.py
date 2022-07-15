@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from quart_cors import cors
 from quart_schema import validate_request
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 from db import DBHandler
 from tele import Telegramhandler
@@ -72,8 +74,8 @@ async def GetAllBonds():
 
 teleToken = os.getenv('TELETOKEN')
 telegramSecret = HashToken(teleToken.encode('utf-8'))
-#db = DBHandler(connString='mongodb://localhost:27017/', dbName='nomisma-db')
-db = DBHandler()
+db = DBHandler(connString='mongodb://localhost:27017/', dbName='nomisma-db')
+#db = DBHandler()
 teleHandler = Telegramhandler(teleToken)
 #app.run(host='0.0.0.0', port=80)
 #app.run(debug=True)
